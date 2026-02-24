@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
 const DINING_HALLS = [
-  { id: "allison", name: "Allison", subtitle: "South Campus", emoji: "🏛️", lat: 42.0514, lng: -87.6773, hours: "7am – 9pm", isOpen: true, radius: 120, color: "#FF6B6B" },
-  { id: "elder", name: "Elder", subtitle: "North Campus", emoji: "🌿", lat: 42.0589, lng: -87.6752, hours: "7am – 8pm", isOpen: true, radius: 100, color: "#4ECB71" },
-  { id: "plex", name: "Plex", subtitle: "Mid Campus", emoji: "🔷", lat: 42.0553, lng: -87.6741, hours: "7am – 10pm", isOpen: true, radius: 100, color: "#4A9EFF" },
-  { id: "foster", name: "Foster-Walker", subtitle: "North Campus", emoji: "🍂", lat: 42.0596, lng: -87.6764, hours: "7am – 9pm", isOpen: false, radius: 100, color: "#FF9500" },
-  { id: "hinman", name: "Hinman", subtitle: "South Campus", emoji: "⚡", lat: 42.0506, lng: -87.6759, hours: "11am – 2pm", isOpen: false, radius: 100, color: "#BF5AF2" },
+  { id: "allison",   name: "Allison",   subtitle: "South Campus",  emoji: "🏛️", lat: 42.0510, lng: -87.6737, hours: "7am – 9pm",  isOpen: true,  radius: 120, color: "#FF6B6B" },
+  { id: "sargent",   name: "Sargent",   subtitle: "North Campus",  emoji: "🟢", lat: 42.0573, lng: -87.6751, hours: "7:30am – 8pm", isOpen: true,  radius: 120, color: "#4ECB71" },
+  { id: "elder",     name: "Elder",     subtitle: "North Campus",  emoji: "🌿", lat: 42.0589, lng: -87.6748, hours: "7am – 10pm", isOpen: true,  radius: 100, color: "#4A9EFF" },
+  { id: "plexeast",  name: "Plex East", subtitle: "Mid Campus",    emoji: "🔷", lat: 42.0547, lng: -87.6756, hours: "7am – 10pm", isOpen: true,  radius: 100, color: "#FF9500" },
+  { id: "plexwest",  name: "Plex West", subtitle: "Mid Campus",    emoji: "🌾", lat: 42.0545, lng: -87.6759, hours: "7am – 9pm",  isOpen: true,  radius: 100, color: "#BF5AF2" },
 ];
 
 const ALL_TAGS = ["🔥 Amazing!", "🍽️ Huge Portion", "🥦 Healthy", "🧂 Too Salty", "🌶️ Too Spicy", "😑 Bland", "🍬 Too Sweet", "🥵 Overcooked", "❄️ Undercooked", "📦 Small Portion"];
@@ -46,15 +46,27 @@ const SEED_MENU = {
       { id: "r8", user: "nugrad_cs", avatar: "N", vote: "up", tags: ["🔥 Amazing!"], text: "Best thing at Plex by miles. Broth is rich, noodles al dente. I come here just for this.", time: "1h ago", helpful: 29 },
     ]},
   ],
-  foster: [
-    { id: 14, name: "Eggs Benedict", station: "Brunch", emoji: "🍳", upvotes: 77, downvotes: 5, tags: { "🔥 Amazing!": 55, "🍽️ Huge Portion": 14 }, reviews: [] },
-    { id: 15, name: "Grilled Salmon", station: "Grill", emoji: "🐟", upvotes: 92, downvotes: 7, tags: { "🔥 Amazing!": 60, "🥦 Healthy": 28 }, reviews: [] },
-  ],
-  hinman: [
-    { id: 16, name: "Chocolate Lava Cake", station: "Dessert", emoji: "🍫", upvotes: 188, downvotes: 5, tags: { "🔥 Amazing!": 160, "🍽️ Huge Portion": 20 }, reviews: [
-      { id: "r9", user: "dillo_fan", avatar: "D", vote: "up", tags: ["🔥 Amazing!", "🍽️ Huge Portion"], text: "This is dangerous. Molten center every single time. Hinman stay winning.", time: "45m ago", helpful: 52 },
+  sargent: [
+    { id: 14, name: "Rotisserie Chicken", station: "Homestyle", emoji: "🍗", upvotes: 134, downvotes: 8, tags: { "🔥 Amazing!": 90, "🍽️ Huge Portion": 38 }, reviews: [
+      { id: "r9", user: "sarge_regular", avatar: "S", vote: "up", tags: ["🔥 Amazing!"], text: "Sarge rotisserie chicken is undefeated. Perfectly seasoned every time.", time: "1h ago", helpful: 27 },
     ]},
-    { id: 17, name: "Minestrone Soup", station: "Soup", emoji: "🥣", upvotes: 41, downvotes: 11, tags: { "😑 Bland": 10, "🥦 Healthy": 18 }, reviews: [] },
+    { id: 15, name: "S'mores Bar", station: "Dessert", emoji: "🍫", upvotes: 201, downvotes: 4, tags: { "🔥 Amazing!": 175, "🍬 Too Sweet": 18 }, reviews: [
+      { id: "r10", user: "dillo_fan", avatar: "D", vote: "up", tags: ["🔥 Amazing!"], text: "These are dangerous. The graham cracker base is perfect. Don't skip dessert at Sarge.", time: "45m ago", helpful: 52 },
+    ]},
+    { id: 16, name: "Made-to-Order Omelette", station: "Breakfast", emoji: "🥚", upvotes: 88, downvotes: 6, tags: { "🔥 Amazing!": 55, "🥦 Healthy": 28 }, reviews: [] },
+    { id: 17, name: "Avocado Toast", station: "Breakfast", emoji: "🥑", upvotes: 71, downvotes: 14, tags: { "🥦 Healthy": 50, "📦 Small Portion": 22 }, reviews: [] },
+  ],
+  plexeast: [
+    { id: 18, name: "Build-Your-Own Stir Fry", station: "Pure Eats", emoji: "🥡", upvotes: 156, downvotes: 9, tags: { "🔥 Amazing!": 110, "🥦 Healthy": 42 }, reviews: [
+      { id: "r11", user: "allergy_wildcat", avatar: "A", vote: "up", tags: ["🔥 Amazing!", "🥦 Healthy"], text: "As someone with allergies, Plex East is a lifesaver. The stir fry is genuinely delicious, not just 'safe'.", time: "2h ago", helpful: 38 },
+    ]},
+    { id: 19, name: "Tacos", station: "Pure Eats", emoji: "🌮", upvotes: 122, downvotes: 11, tags: { "🔥 Amazing!": 88, "🌶️ Too Spicy": 14 }, reviews: [] },
+    { id: 20, name: "Kosher Station", station: "Kosher", emoji: "✡️", upvotes: 67, downvotes: 5, tags: { "🔥 Amazing!": 45, "🥦 Healthy": 18 }, reviews: [] },
+  ],
+  plexwest: [
+    { id: 21, name: "Grilled Salmon", station: "Grill", emoji: "🐟", upvotes: 92, downvotes: 7, tags: { "🔥 Amazing!": 60, "🥦 Healthy": 28 }, reviews: [] },
+    { id: 22, name: "Pasta Bar", station: "Pasta", emoji: "🍝", upvotes: 74, downvotes: 18, tags: { "🍽️ Huge Portion": 40, "😑 Bland": 22 }, reviews: [] },
+    { id: 23, name: "Chocolate Lava Cake", station: "Dessert", emoji: "🍫", upvotes: 188, downvotes: 5, tags: { "🔥 Amazing!": 160, "🍽️ Huge Portion": 20 }, reviews: [] },
   ],
 };
 
@@ -63,7 +75,7 @@ const SEED_ACTIVITY = [
   { id: "a2", user: "nugrad_cs", avatar: "N", item: "Korean BBQ Bowl", hall: "Allison", vote: "up", tag: null, review: null, time: "5m" },
   { id: "a3", user: "dillo_fan", avatar: "D", item: "Pepperoni Pizza", hall: "Elder", vote: "up", tag: "🍽️ Huge Portion", review: null, time: "8m" },
   { id: "a4", user: "lakefill_lurker", avatar: "L", item: "Vegan Burger", hall: "Elder", vote: "down", tag: "😑 Bland", review: "Zero flavor, needs seasoning badly.", time: "11m" },
-  { id: "a5", user: "tech_wildcat", avatar: "T", item: "Grilled Salmon", hall: "Foster-Walker", vote: "up", tag: "🥦 Healthy", review: null, time: "14m" },
+  { id: "a5", user: "tech_wildcat", avatar: "T", item: "Rotisserie Chicken", hall: "Sargent", vote: "up", tag: "🔥 Amazing!", review: null, time: "14m" },
   { id: "a6", user: "sheridan_rd", avatar: "S", item: "Miso Ramen", hall: "Plex", vote: "up", tag: "🔥 Amazing!", review: "Best thing at Plex by miles.", time: "19m" },
 ];
 
