@@ -97,7 +97,7 @@ function Avatar({ letter, size, color }) {
   const s = size || 32;
   const c = color || "#4A9EFF";
   return (
-    <div style={{ width: s, height: s, borderRadius: Math.round(s / 3), background: c + "22", border: "1.5px solid " + c + "44", display: "flex", alignItems: "center", justifyContent: "center", fontSize: s * 0.42, fontWeight: 900, color: c, flexShrink: 0, fontFamily: "Syne, sans-serif" }}>
+    <div style={{ width: s, height: s, borderRadius: Math.round(s / 3), background: c + "22", border: "1.5px solid " + c + "44", display: "flex", alignItems: "center", justifyContent: "center", fontSize: s * 0.42, fontWeight: 900, color: c, flexShrink: 0, fontFamily: "Inter, sans-serif" }}>
       {letter}
     </div>
   );
@@ -136,7 +136,7 @@ function ReviewCard({ review, onHelpful }) {
       )}
       <button
         onClick={function() { if (!helped) { setHelped(true); onHelpful(review.id); } }}
-        style={{ background: helped ? "rgba(74,158,255,0.12)" : "transparent", border: "1px solid " + (helped ? "rgba(74,158,255,0.3)" : "rgba(255,255,255,0.1)"), borderRadius: 99, padding: "5px 12px", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 5, transition: "all 0.2s", fontFamily: "Syne, sans-serif" }}
+        style={{ background: helped ? "rgba(74,158,255,0.12)" : "transparent", border: "1px solid " + (helped ? "rgba(74,158,255,0.3)" : "rgba(255,255,255,0.1)"), borderRadius: 99, padding: "5px 12px", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 5, transition: "all 0.2s", fontFamily: "Inter, sans-serif" }}
       >
         <span style={{ fontSize: 12 }}>👍</span>
         <span style={{ fontSize: 11, fontWeight: 700, color: helped ? "#4A9EFF" : "rgba(255,255,255,0.3)" }}>Helpful · {review.helpful + (helped ? 1 : 0)}</span>
@@ -172,7 +172,7 @@ function ReviewRow({ review, onHelpful }) {
           )}
           <button
             onClick={function() { if (!helped) { setHelped(true); onHelpful(review.id); } }}
-            style={{ background: "none", border: "none", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 4, padding: 0, fontFamily: "Syne, sans-serif" }}
+            style={{ background: "none", border: "none", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 4, padding: 0, fontFamily: "Inter, sans-serif" }}
           >
             <span style={{ fontSize: 11, color: helped ? "#4A9EFF" : "rgba(255,255,255,0.2)", fontWeight: 700 }}>👍 Helpful · {review.helpful + (helped ? 1 : 0)}</span>
           </button>
@@ -236,7 +236,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
 
         {/* Name + station */}
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontWeight: 900, fontSize: 14, color: "#fff", fontFamily: "Syne, sans-serif", lineHeight: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 160 }}>{item.name}</div>
+          <div style={{ fontWeight: 900, fontSize: 14, color: "#fff", fontFamily: "Inter, sans-serif", lineHeight: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 160 }}>{item.name}</div>
           <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", marginTop: 2 }}>{item.station}</div>
         </div>
 
@@ -246,7 +246,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
             onClick={function() { castVote("up"); }}
             style={{ width: 36, height: 36, borderRadius: 10, border: "1.5px solid " + (myVote === "up" ? "#4ECB71" : "rgba(255,255,255,0.1)"), background: myVote === "up" ? "rgba(78,203,113,0.18)" : "rgba(255,255,255,0.04)", cursor: myVote ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, transition: "all 0.15s", transform: myVote === "up" ? "scale(1.1)" : "" }}
           >👍</button>
-          <div style={{ fontSize: 13, fontWeight: 900, color: pctColor, fontFamily: "Syne, sans-serif", minWidth: 28, textAlign: "center" }}>{pct}%</div>
+          <div style={{ fontSize: 13, fontWeight: 900, color: pctColor, fontFamily: "Inter, sans-serif", minWidth: 28, textAlign: "center" }}>{pct}%</div>
           <button
             onClick={function() { castVote("down"); }}
             style={{ width: 36, height: 36, borderRadius: 10, border: "1.5px solid " + (myVote === "down" ? "#FF6B6B" : "rgba(255,255,255,0.1)"), background: myVote === "down" ? "rgba(255,107,107,0.18)" : "rgba(255,255,255,0.04)", cursor: myVote ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, transition: "all 0.15s", transform: myVote === "down" ? "scale(1.1)" : "" }}
@@ -282,7 +282,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
         {/* Reviews toggle */}
         <button
           onClick={function() { setShowReviews(function(p) { return !p; }); setShowWriteReview(false); }}
-          style={{ display: "flex", alignItems: "center", gap: 5, background: showReviews ? "rgba(74,158,255,0.12)" : "transparent", border: "1px solid " + (showReviews ? "rgba(74,158,255,0.25)" : "rgba(255,255,255,0.08)"), borderRadius: 8, padding: "5px 10px", cursor: "pointer", fontFamily: "Syne, sans-serif", transition: "all 0.15s" }}
+          style={{ display: "flex", alignItems: "center", gap: 5, background: showReviews ? "rgba(74,158,255,0.12)" : "transparent", border: "1px solid " + (showReviews ? "rgba(74,158,255,0.25)" : "rgba(255,255,255,0.08)"), borderRadius: 8, padding: "5px 10px", cursor: "pointer", fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}
         >
           <span style={{ fontSize: 12 }}>💬</span>
           <span style={{ fontSize: 11, fontWeight: 700, color: showReviews ? "#4A9EFF" : "rgba(255,255,255,0.4)" }}>
@@ -294,7 +294,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
         {/* Write review */}
         <button
           onClick={function() { setShowWriteReview(function(p) { return !p; }); setShowReviews(false); }}
-          style={{ display: "flex", alignItems: "center", gap: 5, background: showWriteReview ? hallColor + "18" : "transparent", border: "1px solid " + (showWriteReview ? hallColor + "40" : "rgba(255,255,255,0.08)"), borderRadius: 8, padding: "5px 10px", cursor: "pointer", fontFamily: "Syne, sans-serif", transition: "all 0.15s" }}
+          style={{ display: "flex", alignItems: "center", gap: 5, background: showWriteReview ? hallColor + "18" : "transparent", border: "1px solid " + (showWriteReview ? hallColor + "40" : "rgba(255,255,255,0.08)"), borderRadius: 8, padding: "5px 10px", cursor: "pointer", fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}
         >
           <span style={{ fontSize: 11 }}>✏️</span>
           <span style={{ fontSize: 11, fontWeight: 700, color: showWriteReview ? hallColor : "rgba(255,255,255,0.4)" }}>Review</span>
@@ -328,7 +328,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
                   const sel = myVote === v;
                   return (
                     <button key={v} onClick={function(){ setMyVote(v); }}
-                      style={{ flex:1, padding:"8px 6px", borderRadius:10, border:"1.5px solid "+(sel?col:"rgba(255,255,255,0.1)"), background:sel?col+"18":"rgba(255,255,255,0.03)", cursor:"pointer", fontSize:12, fontWeight:800, color:sel?col:"rgba(255,255,255,0.5)", fontFamily:"Syne, sans-serif" }}>
+                      style={{ flex:1, padding:"8px 6px", borderRadius:10, border:"1.5px solid "+(sel?col:"rgba(255,255,255,0.1)"), background:sel?col+"18":"rgba(255,255,255,0.03)", cursor:"pointer", fontSize:12, fontWeight:800, color:sel?col:"rgba(255,255,255,0.5)", fontFamily:"Inter, sans-serif" }}>
                       {label}
                     </button>
                   );
@@ -344,7 +344,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
               const ip = POS_TAGS.includes(tag);
               return (
                 <button key={tag} onClick={function(){ toggleTag(tag); }}
-                  style={{ padding:"4px 9px", borderRadius:99, border:"1px solid "+(sel?(ip?"#4ECB71":"#FF6B6B"):"rgba(255,255,255,0.09)"), background:sel?(ip?"rgba(78,203,113,0.12)":"rgba(255,107,107,0.12)"):"rgba(255,255,255,0.03)", color:sel?(ip?"#4ECB71":"#FF6B6B"):"rgba(255,255,255,0.4)", fontSize:11, fontWeight:700, cursor:"pointer", fontFamily:"Syne, sans-serif" }}>
+                  style={{ padding:"4px 9px", borderRadius:99, border:"1px solid "+(sel?(ip?"#4ECB71":"#FF6B6B"):"rgba(255,255,255,0.09)"), background:sel?(ip?"rgba(78,203,113,0.12)":"rgba(255,107,107,0.12)"):"rgba(255,255,255,0.03)", color:sel?(ip?"#4ECB71":"#FF6B6B"):"rgba(255,255,255,0.4)", fontSize:11, fontWeight:700, cursor:"pointer", fontFamily:"Inter, sans-serif" }}>
                   {tag}
                 </button>
               );
@@ -356,7 +356,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
               onChange={function(e){ if(e.target.value.length<=MAX_CHARS) setReviewText(e.target.value); }}
               placeholder="What did you think?"
               rows={3}
-              style={{ width:"100%", padding:"10px 10px 26px", background:"rgba(255,255,255,0.05)", border:"1.5px solid rgba(255,255,255,0.1)", borderRadius:10, color:"#fff", fontSize:13, lineHeight:1.55, resize:"none", outline:"none", fontFamily:"Syne, sans-serif", boxSizing:"border-box", transition:"border-color 0.2s" }}
+              style={{ width:"100%", padding:"10px 10px 26px", background:"rgba(255,255,255,0.05)", border:"1.5px solid rgba(255,255,255,0.1)", borderRadius:10, color:"#fff", fontSize:13, lineHeight:1.55, resize:"none", outline:"none", fontFamily:"Inter, sans-serif", boxSizing:"border-box", transition:"border-color 0.2s" }}
               onFocus={function(e){ e.target.style.borderColor=hallColor; }}
               onBlur={function(e){ e.target.style.borderColor="rgba(255,255,255,0.1)"; }}
             />
@@ -364,11 +364,11 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
           </div>
           <div style={{ display:"flex", gap:8 }}>
             <button onClick={function(){ setShowWriteReview(false); setReviewText(""); setSelectedTags([]); }}
-              style={{ padding:"9px 14px", borderRadius:10, border:"1px solid rgba(255,255,255,0.1)", background:"transparent", color:"rgba(255,255,255,0.3)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"Syne, sans-serif" }}>
+              style={{ padding:"9px 14px", borderRadius:10, border:"1px solid rgba(255,255,255,0.1)", background:"transparent", color:"rgba(255,255,255,0.3)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"Inter, sans-serif" }}>
               Cancel
             </button>
             <button onClick={postReview} disabled={!reviewText.trim()}
-              style={{ flex:1, padding:"9px 0", borderRadius:10, border:"none", background:reviewText.trim()?"linear-gradient(135deg,#4ECB71,#1fa84a)":"rgba(255,255,255,0.07)", color:reviewText.trim()?"#fff":"rgba(255,255,255,0.2)", fontWeight:900, fontSize:13, cursor:reviewText.trim()?"pointer":"not-allowed", fontFamily:"Syne, sans-serif", transition:"all 0.2s" }}>
+              style={{ flex:1, padding:"9px 0", borderRadius:10, border:"none", background:reviewText.trim()?"linear-gradient(135deg,#4ECB71,#1fa84a)":"rgba(255,255,255,0.07)", color:reviewText.trim()?"#fff":"rgba(255,255,255,0.2)", fontWeight:900, fontSize:13, cursor:reviewText.trim()?"pointer":"not-allowed", fontFamily:"Inter, sans-serif", transition:"all 0.2s" }}>
               📝 Post Review
             </button>
           </div>
@@ -385,13 +385,13 @@ function GeoPromptBanner({ hall, onAccept, onDismiss }) {
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
           <div style={{ width: 42, height: 42, borderRadius: 14, background: hall.color + "20", border: "2px solid " + hall.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{hall.emoji}</div>
           <div>
-            <div style={{ color: "#fff", fontWeight: 800, fontSize: 15, fontFamily: "Syne, sans-serif" }}>📍 You're near {hall.name}!</div>
+            <div style={{ color: "#fff", fontWeight: 800, fontSize: 15, fontFamily: "Inter, sans-serif" }}>📍 You're near {hall.name}!</div>
             <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 }}>{hall.distance}m away · {hall.isOpen ? "Open now" : "Currently closed"}</div>
           </div>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={onAccept} style={{ flex: 1, padding: "11px 0", borderRadius: 12, border: "none", background: hall.color, color: "#fff", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "Syne, sans-serif", boxShadow: "0 4px 14px " + hall.color + "55" }}>View {hall.name} Menu →</button>
-          <button onClick={onDismiss} style={{ padding: "11px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", background: "transparent", color: "rgba(255,255,255,0.6)", fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "Syne, sans-serif" }}>Dismiss</button>
+          <button onClick={onAccept} style={{ flex: 1, padding: "11px 0", borderRadius: 12, border: "none", background: hall.color, color: "#fff", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "Inter, sans-serif", boxShadow: "0 4px 14px " + hall.color + "55" }}>View {hall.name} Menu →</button>
+          <button onClick={onDismiss} style={{ padding: "11px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", background: "transparent", color: "rgba(255,255,255,0.6)", fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>Dismiss</button>
         </div>
       </div>
     </div>
@@ -419,13 +419,13 @@ function AnalyticsDashboard({ menu }) {
     <div style={{ padding: "0 16px 100px" }}>
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 }}>Levi Insights</div>
-        <div style={{ fontSize: 24, fontWeight: 900, color: "#fff", fontFamily: "Syne, sans-serif" }}>Analytics Dashboard</div>
+        <div style={{ fontSize: 24, fontWeight: 900, color: "#fff", fontFamily: "Inter, sans-serif" }}>Analytics Dashboard</div>
       </div>
       <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
         {[[String(totalRatings), "Ratings", "↑ 23% this week"], [String(totalReviews), "Reviews", "With written text"], ["5", "Halls", "All tracked"]].map(function(item) {
           return (
             <div key={item[1]} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 16, padding: "14px 12px", flex: 1, border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", fontFamily: "Syne, sans-serif" }}>{item[0]}</div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", fontFamily: "Inter, sans-serif" }}>{item[0]}</div>
               <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>{item[1]}</div>
               <div style={{ fontSize: 10, color: "#4ECB71", marginTop: 4, fontWeight: 700 }}>{item[2]}</div>
             </div>
@@ -433,7 +433,7 @@ function AnalyticsDashboard({ menu }) {
         })}
       </div>
       <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 16, fontFamily: "Syne, sans-serif" }}>Hall Approval Ratings</div>
+        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 16, fontFamily: "Inter, sans-serif" }}>Hall Approval Ratings</div>
         {hallStats.map(function(h) {
           const col = h.score >= 80 ? "#4ECB71" : h.score >= 55 ? "#FFD60A" : "#FF6B6B";
           return (
@@ -444,7 +444,7 @@ function AnalyticsDashboard({ menu }) {
                   <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.8)" }}>{h.name}</span>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)" }}>💬 {h.reviewCount}</span>
-                    <span style={{ fontSize: 12, fontWeight: 900, color: col, fontFamily: "Syne, sans-serif" }}>{h.score}%</span>
+                    <span style={{ fontSize: 12, fontWeight: 900, color: col, fontFamily: "Inter, sans-serif" }}>{h.score}%</span>
                   </div>
                 </div>
                 <div style={{ height: 5, background: "rgba(255,255,255,0.08)", borderRadius: 99, overflow: "hidden" }}>
@@ -457,7 +457,7 @@ function AnalyticsDashboard({ menu }) {
         })}
       </div>
       <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Syne, sans-serif" }}>🏆 Most Loved Items</div>
+        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Inter, sans-serif" }}>🏆 Most Loved Items</div>
         {topItems.map(function(item, i) {
           const hall = DINING_HALLS.find(function(h) { return h.id === item.hallId; });
           const revCount = item.reviews ? item.reviews.filter(function(r) { return r.text; }).length : 0;
@@ -469,14 +469,14 @@ function AnalyticsDashboard({ menu }) {
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{item.name}</div>
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>{hall ? hall.name : ""} · 💬 {revCount} reviews</div>
               </div>
-              <div style={{ fontWeight: 900, fontSize: 13, color: "#4ECB71", fontFamily: "Syne, sans-serif" }}>👍 {item.upvotes}</div>
+              <div style={{ fontWeight: 900, fontSize: 13, color: "#4ECB71", fontFamily: "Inter, sans-serif" }}>👍 {item.upvotes}</div>
             </div>
           );
         })}
       </div>
       {recentReviews.length > 0 && (
         <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Syne, sans-serif" }}>💬 Latest Student Reviews</div>
+          <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Inter, sans-serif" }}>💬 Latest Student Reviews</div>
           {recentReviews.map(function(r, i) {
             return (
               <div key={r.id} style={{ padding: "10px 0", borderBottom: i < recentReviews.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
@@ -493,7 +493,7 @@ function AnalyticsDashboard({ menu }) {
         </div>
       )}
       <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Syne, sans-serif" }}>🔖 Top Feedback Tags</div>
+        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Inter, sans-serif" }}>🔖 Top Feedback Tags</div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {topTags.map(function(entry) {
             const tag = entry[0]; const count = entry[1]; const ip = POS_TAGS.includes(tag);
@@ -545,23 +545,75 @@ export default function App() {
   const [geoPrompt, setGeoPrompt] = useState(null);
   const [dismissedPrompt, setDismissedPrompt] = useState(null);
   const watchRef = useRef(null);
+  const insideHallRef = useRef(null); // tracks which hall user is currently inside
+  const exitTimerRef = useRef(null);  // debounce so brief GPS drift doesn't fire
 
   const showToast = useCallback(function(msg) { setToast(msg); setTimeout(function() { setToast(null); }, 2400); }, []);
+
+  function requestNotificationPermission(hallName, hallId) {
+    if (!("Notification" in window)) return;
+    if (Notification.permission === "granted") {
+      fireRatingNotification(hallName, hallId);
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(function(perm) {
+        if (perm === "granted") fireRatingNotification(hallName, hallId);
+      });
+    }
+  }
+
+  function fireRatingNotification(hallName, hallId) {
+    try {
+      var n = new Notification("How was " + hallName + "? 🍽️", {
+        body: "Rate today's dishes before you forget — takes 2 seconds.",
+        icon: "/favicon.ico",
+        tag: "dormdash-rating-" + hallId,
+        renotify: false,
+      });
+      n.onclick = function() { window.focus(); setTab("feed"); setSelectedHall(hallId); };
+    } catch(e) {}
+  }
 
   function handleGeoSuccess(pos) {
     var lat = pos.coords.latitude; var lng = pos.coords.longitude;
     setGeoState("granted");
     var halls = getNearbyHalls(lat, lng);
     var closest = halls[0];
-    if (closest.distance <= closest.radius) {
-      setNearbyHall(closest);
-      if (closest.id !== dismissedPrompt) setGeoPrompt(closest);
-    } else { setNearbyHall(null); setGeoPrompt(null); }
+    var nowInside = closest.distance <= closest.radius ? closest : null;
+    var prevHallId = insideHallRef.current ? insideHallRef.current.id : null;
+    var nowHallId = nowInside ? nowInside.id : null;
+
+    if (nowInside) {
+      // Entered or still inside a hall
+      if (exitTimerRef.current) { clearTimeout(exitTimerRef.current); exitTimerRef.current = null; }
+      insideHallRef.current = nowInside;
+      setNearbyHall(nowInside);
+      if (nowInside.id !== dismissedPrompt) setGeoPrompt(nowInside);
+    } else {
+      // Outside all halls — if we WERE inside one, start exit timer
+      setNearbyHall(null);
+      setGeoPrompt(null);
+      if (prevHallId && !exitTimerRef.current) {
+        var leftHall = insideHallRef.current;
+        exitTimerRef.current = setTimeout(function() {
+          // Confirm still outside after 45s (avoid GPS jitter triggering it)
+          insideHallRef.current = null;
+          exitTimerRef.current = null;
+          requestNotificationPermission(leftHall.name, leftHall.id);
+          showToast("📍 Left " + leftHall.name + " — how was it?");
+          setSelectedHall(leftHall.id);
+          setTab("feed");
+        }, 45000); // 45 second debounce — confirmed exit
+      }
+    }
   }
 
   function requestGeo() {
     if (!navigator.geolocation) return showToast("Geolocation not supported");
     setGeoState("requesting");
+    // Pre-request notification permission so the prompt comes before they leave
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
     navigator.geolocation.getCurrentPosition(handleGeoSuccess, function() { setGeoState("denied"); showToast("📍 Location denied — browse from anywhere!"); }, { enableHighAccuracy: true, timeout: 8000 });
     if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current);
     watchRef.current = navigator.geolocation.watchPosition(handleGeoSuccess, function() {}, { maximumAge: 30000 });
@@ -573,7 +625,12 @@ export default function App() {
     showToast("📍 Simulating near " + hall.name);
   }
 
-  useEffect(function() { return function() { if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current); }; }, []);
+  useEffect(function() {
+    return function() {
+      if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current);
+      if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+    };
+  }, []);
 
   function handleSubmit(itemId, vote, tags, reviewText) {
     var hasReview = reviewText.trim().length > 0;
@@ -630,9 +687,9 @@ export default function App() {
 
   return (
     <PhoneFrame>
-    <div style={{ fontFamily: "Syne, sans-serif", width: "100%", minHeight: "100vh", background: "#0a0a14", position: "relative", display: "flex", flexDirection: "column", color: "#fff" }}>
+    <div style={{ fontFamily: "Inter, sans-serif", width: "100%", minHeight: "100vh", background: "#0a0a14", position: "relative", display: "flex", flexDirection: "column", color: "#fff" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body, #root { background: #050509; min-height: 100vh; }
         ::-webkit-scrollbar { display: none; }
@@ -681,7 +738,7 @@ export default function App() {
         <div style={{ display: "flex" }}>
           {[["feed", "🍽️ Menu"], ["activity", "⚡ Live"], ["analytics", "📊 Insights"]].map(function(item) {
             return (
-              <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ flex: 1, padding: "10px 0", border: "none", background: "none", cursor: "pointer", fontSize: 12, fontWeight: tab === item[0] ? 800 : 600, color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", borderBottom: "2px solid " + (tab === item[0] ? "#4ECB71" : "transparent"), transition: "all 0.2s", fontFamily: "Syne, sans-serif" }}>
+              <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ flex: 1, padding: "10px 0", border: "none", background: "none", cursor: "pointer", fontSize: 12, fontWeight: tab === item[0] ? 800 : 600, color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", borderBottom: "2px solid " + (tab === item[0] ? "#4ECB71" : "transparent"), transition: "all 0.2s", fontFamily: "Inter, sans-serif" }}>
                 {item[1]}
               </button>
             );
@@ -694,7 +751,7 @@ export default function App() {
           <div style={{ padding: "16px 16px 120px" }}>
             <button
               onClick={requestGeo}
-              style={{ width: "100%", padding: "10px 14px", background: geoState === "granted" ? "rgba(78,203,113,0.07)" : "rgba(255,255,255,0.03)", border: "1px solid " + (geoState === "granted" ? "rgba(78,203,113,0.22)" : "rgba(255,255,255,0.07)"), borderRadius: 12, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: 14, fontFamily: "Syne, sans-serif", transition: "all 0.15s" }}
+              style={{ width: "100%", padding: "10px 14px", background: geoState === "granted" ? "rgba(78,203,113,0.07)" : "rgba(255,255,255,0.03)", border: "1px solid " + (geoState === "granted" ? "rgba(78,203,113,0.22)" : "rgba(255,255,255,0.07)"), borderRadius: 12, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: 14, fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}
             >
               <span style={{ fontSize: 14 }}>{geoState === "granted" ? "📍" : geoState === "denied" ? "🚫" : "🔍"}</span>
               <span style={{ fontSize: 12, fontWeight: 600, color: geoState === "granted" ? "#4ECB71" : "rgba(255,255,255,0.38)", flex: 1, textAlign: "left" }}>
@@ -708,7 +765,7 @@ export default function App() {
                 <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>Demo: simulate location</div>
                 <div style={{ display: "flex", gap: 8, overflowX: "auto" }}>
                   {DINING_HALLS.slice(0, 3).map(function(h) {
-                    return <button key={h.id} onClick={function() { simulateLocation(h.id); }} style={{ flexShrink: 0, padding: "6px 12px", borderRadius: 99, border: "1px solid " + h.color + "40", background: h.color + "15", color: h.color, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Syne, sans-serif" }}>📍 {h.name}</button>;
+                    return <button key={h.id} onClick={function() { simulateLocation(h.id); }} style={{ flexShrink: 0, padding: "6px 12px", borderRadius: 99, border: "1px solid " + h.color + "40", background: h.color + "15", color: h.color, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>📍 {h.name}</button>;
                   })}
                 </div>
               </div>
@@ -719,7 +776,7 @@ export default function App() {
                 var sel = selectedHall === hall.id;
                 var isNearby = nearbyHall && nearbyHall.id === hall.id;
                 return (
-                  <button key={hall.id} onClick={function() { setSelectedHall(hall.id); }} style={{ flexShrink: 0, padding: "8px 14px", borderRadius: 14, border: "1.5px solid " + (sel ? hall.color : "rgba(255,255,255,0.1)"), background: sel ? hall.color + "18" : "rgba(255,255,255,0.04)", cursor: "pointer", transition: "all 0.15s", fontFamily: "Syne, sans-serif", position: "relative" }}>
+                  <button key={hall.id} onClick={function() { setSelectedHall(hall.id); }} style={{ flexShrink: 0, padding: "8px 14px", borderRadius: 14, border: "1.5px solid " + (sel ? hall.color : "rgba(255,255,255,0.1)"), background: sel ? hall.color + "18" : "rgba(255,255,255,0.04)", cursor: "pointer", transition: "all 0.15s", fontFamily: "Inter, sans-serif", position: "relative" }}>
                     {isNearby && <div style={{ position: "absolute", top: -4, right: -4, width: 10, height: 10, borderRadius: 99, background: "#4ECB71", border: "2px solid #0a0a14" }} />}
                     <div style={{ fontSize: 18 }}>{hall.emoji}</div>
                     <div style={{ fontSize: 10, fontWeight: sel ? 800 : 600, color: sel ? hall.color : "rgba(255,255,255,0.4)", marginTop: 3, whiteSpace: "nowrap" }}>{hall.name}</div>
@@ -737,7 +794,7 @@ export default function App() {
               </div>
               <div style={{ display: "flex", gap: 6 }}>
                 {[["top", "🔥"], ["new", "✨"], ["best", "⭐"]].map(function(item) {
-                  return <button key={item[0]} onClick={function() { setSortBy(item[0]); }} style={{ padding: "5px 10px", borderRadius: 99, border: "1px solid", borderColor: sortBy === item[0] ? "#4ECB71" : "rgba(255,255,255,0.1)", background: sortBy === item[0] ? "rgba(78,203,113,0.15)" : "transparent", color: sortBy === item[0] ? "#4ECB71" : "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Syne, sans-serif" }}>{item[1]} {item[0]}</button>;
+                  return <button key={item[0]} onClick={function() { setSortBy(item[0]); }} style={{ padding: "5px 10px", borderRadius: 99, border: "1px solid", borderColor: sortBy === item[0] ? "#4ECB71" : "rgba(255,255,255,0.1)", background: sortBy === item[0] ? "rgba(78,203,113,0.15)" : "transparent", color: sortBy === item[0] ? "#4ECB71" : "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>{item[1]} {item[0]}</button>;
                 })}
               </div>
             </div>
@@ -792,7 +849,7 @@ export default function App() {
       <div style={{ position: "sticky", bottom: 0, width: "100%", background: "rgba(10,10,20,0.96)", backdropFilter: "blur(16px)", borderTop: "1px solid rgba(255,255,255,0.07)", padding: "10px 20px 24px", display: "flex", justifyContent: "space-around", zIndex: 50 }}>
         {[["feed", "🍽️", "Menu"], ["activity", "⚡", "Live"], ["analytics", "📊", "Insights"]].map(function(item) {
           return (
-            <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, background: "none", border: "none", cursor: "pointer", color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", fontFamily: "Syne, sans-serif", transition: "color 0.2s" }}>
+            <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, background: "none", border: "none", cursor: "pointer", color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", fontFamily: "Inter, sans-serif", transition: "color 0.2s" }}>
               <span style={{ fontSize: 22 }}>{item[1]}</span>
               <span style={{ fontSize: 10, fontWeight: tab === item[0] ? 800 : 600 }}>{item[2]}</span>
             </button>
