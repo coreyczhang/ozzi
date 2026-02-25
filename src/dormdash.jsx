@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 
 const DINING_HALLS = [
-  { id: "allison", name: "Allison", subtitle: "South Campus", emoji: "🏛️", lat: 42.0514, lng: -87.6773, hours: "7am – 9pm", isOpen: true, radius: 120, color: "#FF6B6B" },
-  { id: "elder", name: "Elder", subtitle: "North Campus", emoji: "🌿", lat: 42.0589, lng: -87.6752, hours: "7am – 8pm", isOpen: true, radius: 100, color: "#4ECB71" },
-  { id: "plex", name: "Plex", subtitle: "Mid Campus", emoji: "🔷", lat: 42.0553, lng: -87.6741, hours: "7am – 10pm", isOpen: true, radius: 100, color: "#4A9EFF" },
-  { id: "foster", name: "Foster-Walker", subtitle: "North Campus", emoji: "🍂", lat: 42.0596, lng: -87.6764, hours: "7am – 9pm", isOpen: false, radius: 100, color: "#FF9500" },
-  { id: "hinman", name: "Hinman", subtitle: "South Campus", emoji: "⚡", lat: 42.0506, lng: -87.6759, hours: "11am – 2pm", isOpen: false, radius: 100, color: "#BF5AF2" },
+  { id: "allison",   name: "Allison",   subtitle: "South Campus",  emoji: "🏛️", lat: 42.0510, lng: -87.6737, hours: "7am – 9pm",  isOpen: true,  radius: 120, color: "#FF6B6B" },
+  { id: "sargent",   name: "Sargent",   subtitle: "North Campus",  emoji: "🟢", lat: 42.0573, lng: -87.6751, hours: "7:30am – 8pm", isOpen: true,  radius: 120, color: "#4ECB71" },
+  { id: "elder",     name: "Elder",     subtitle: "North Campus",  emoji: "🌿", lat: 42.0589, lng: -87.6748, hours: "7am – 10pm", isOpen: true,  radius: 100, color: "#4A9EFF" },
+  { id: "plexeast",  name: "Plex East", subtitle: "Mid Campus",    emoji: "🔷", lat: 42.0547, lng: -87.6756, hours: "7am – 10pm", isOpen: true,  radius: 100, color: "#FF9500" },
+  { id: "plexwest",  name: "Plex West", subtitle: "Mid Campus",    emoji: "🌾", lat: 42.0545, lng: -87.6759, hours: "7am – 9pm",  isOpen: true,  radius: 100, color: "#BF5AF2" },
 ];
 
 const ALL_TAGS = ["🔥 Amazing!", "🍽️ Huge Portion", "🥦 Healthy", "🧂 Too Salty", "🌶️ Too Spicy", "😑 Bland", "🍬 Too Sweet", "🥵 Overcooked", "❄️ Undercooked", "📦 Small Portion"];
@@ -46,15 +46,27 @@ const SEED_MENU = {
       { id: "r8", user: "nugrad_cs", avatar: "N", vote: "up", tags: ["🔥 Amazing!"], text: "Best thing at Plex by miles. Broth is rich, noodles al dente. I come here just for this.", time: "1h ago", helpful: 29 },
     ]},
   ],
-  foster: [
-    { id: 14, name: "Eggs Benedict", station: "Brunch", emoji: "🍳", upvotes: 77, downvotes: 5, tags: { "🔥 Amazing!": 55, "🍽️ Huge Portion": 14 }, reviews: [] },
-    { id: 15, name: "Grilled Salmon", station: "Grill", emoji: "🐟", upvotes: 92, downvotes: 7, tags: { "🔥 Amazing!": 60, "🥦 Healthy": 28 }, reviews: [] },
-  ],
-  hinman: [
-    { id: 16, name: "Chocolate Lava Cake", station: "Dessert", emoji: "🍫", upvotes: 188, downvotes: 5, tags: { "🔥 Amazing!": 160, "🍽️ Huge Portion": 20 }, reviews: [
-      { id: "r9", user: "dillo_fan", avatar: "D", vote: "up", tags: ["🔥 Amazing!", "🍽️ Huge Portion"], text: "This is dangerous. Molten center every single time. Hinman stay winning.", time: "45m ago", helpful: 52 },
+  sargent: [
+    { id: 14, name: "Rotisserie Chicken", station: "Homestyle", emoji: "🍗", upvotes: 134, downvotes: 8, tags: { "🔥 Amazing!": 90, "🍽️ Huge Portion": 38 }, reviews: [
+      { id: "r9", user: "sarge_regular", avatar: "S", vote: "up", tags: ["🔥 Amazing!"], text: "Sarge rotisserie chicken is undefeated. Perfectly seasoned every time.", time: "1h ago", helpful: 27 },
     ]},
-    { id: 17, name: "Minestrone Soup", station: "Soup", emoji: "🥣", upvotes: 41, downvotes: 11, tags: { "😑 Bland": 10, "🥦 Healthy": 18 }, reviews: [] },
+    { id: 15, name: "S'mores Bar", station: "Dessert", emoji: "🍫", upvotes: 201, downvotes: 4, tags: { "🔥 Amazing!": 175, "🍬 Too Sweet": 18 }, reviews: [
+      { id: "r10", user: "dillo_fan", avatar: "D", vote: "up", tags: ["🔥 Amazing!"], text: "These are dangerous. The graham cracker base is perfect. Don't skip dessert at Sarge.", time: "45m ago", helpful: 52 },
+    ]},
+    { id: 16, name: "Made-to-Order Omelette", station: "Breakfast", emoji: "🥚", upvotes: 88, downvotes: 6, tags: { "🔥 Amazing!": 55, "🥦 Healthy": 28 }, reviews: [] },
+    { id: 17, name: "Avocado Toast", station: "Breakfast", emoji: "🥑", upvotes: 71, downvotes: 14, tags: { "🥦 Healthy": 50, "📦 Small Portion": 22 }, reviews: [] },
+  ],
+  plexeast: [
+    { id: 18, name: "Build-Your-Own Stir Fry", station: "Pure Eats", emoji: "🥡", upvotes: 156, downvotes: 9, tags: { "🔥 Amazing!": 110, "🥦 Healthy": 42 }, reviews: [
+      { id: "r11", user: "allergy_wildcat", avatar: "A", vote: "up", tags: ["🔥 Amazing!", "🥦 Healthy"], text: "As someone with allergies, Plex East is a lifesaver. The stir fry is genuinely delicious, not just 'safe'.", time: "2h ago", helpful: 38 },
+    ]},
+    { id: 19, name: "Tacos", station: "Pure Eats", emoji: "🌮", upvotes: 122, downvotes: 11, tags: { "🔥 Amazing!": 88, "🌶️ Too Spicy": 14 }, reviews: [] },
+    { id: 20, name: "Kosher Station", station: "Kosher", emoji: "✡️", upvotes: 67, downvotes: 5, tags: { "🔥 Amazing!": 45, "🥦 Healthy": 18 }, reviews: [] },
+  ],
+  plexwest: [
+    { id: 21, name: "Grilled Salmon", station: "Grill", emoji: "🐟", upvotes: 92, downvotes: 7, tags: { "🔥 Amazing!": 60, "🥦 Healthy": 28 }, reviews: [] },
+    { id: 22, name: "Pasta Bar", station: "Pasta", emoji: "🍝", upvotes: 74, downvotes: 18, tags: { "🍽️ Huge Portion": 40, "😑 Bland": 22 }, reviews: [] },
+    { id: 23, name: "Chocolate Lava Cake", station: "Dessert", emoji: "🍫", upvotes: 188, downvotes: 5, tags: { "🔥 Amazing!": 160, "🍽️ Huge Portion": 20 }, reviews: [] },
   ],
 };
 
@@ -63,7 +75,7 @@ const SEED_ACTIVITY = [
   { id: "a2", user: "nugrad_cs", avatar: "N", item: "Korean BBQ Bowl", hall: "Allison", vote: "up", tag: null, review: null, time: "5m" },
   { id: "a3", user: "dillo_fan", avatar: "D", item: "Pepperoni Pizza", hall: "Elder", vote: "up", tag: "🍽️ Huge Portion", review: null, time: "8m" },
   { id: "a4", user: "lakefill_lurker", avatar: "L", item: "Vegan Burger", hall: "Elder", vote: "down", tag: "😑 Bland", review: "Zero flavor, needs seasoning badly.", time: "11m" },
-  { id: "a5", user: "tech_wildcat", avatar: "T", item: "Grilled Salmon", hall: "Foster-Walker", vote: "up", tag: "🥦 Healthy", review: null, time: "14m" },
+  { id: "a5", user: "tech_wildcat", avatar: "T", item: "Rotisserie Chicken", hall: "Sargent", vote: "up", tag: "🔥 Amazing!", review: null, time: "14m" },
   { id: "a6", user: "sheridan_rd", avatar: "S", item: "Miso Ramen", hall: "Plex", vote: "up", tag: "🔥 Amazing!", review: "Best thing at Plex by miles.", time: "19m" },
 ];
 
@@ -97,7 +109,7 @@ function Avatar({ letter, size, color }) {
   const s = size || 32;
   const c = color || "#4A9EFF";
   return (
-    <div style={{ width: s, height: s, borderRadius: Math.round(s / 3), background: c + "22", border: "1.5px solid " + c + "44", display: "flex", alignItems: "center", justifyContent: "center", fontSize: s * 0.42, fontWeight: 900, color: c, flexShrink: 0, fontFamily: "Syne, sans-serif" }}>
+    <div style={{ width: s, height: s, borderRadius: Math.round(s / 3), background: c + "22", border: "1.5px solid " + c + "44", display: "flex", alignItems: "center", justifyContent: "center", fontSize: s * 0.42, fontWeight: 900, color: c, flexShrink: 0, fontFamily: "Inter, sans-serif" }}>
       {letter}
     </div>
   );
@@ -108,7 +120,7 @@ function ReviewCard({ review, onHelpful }) {
   const isPos = review.vote === "up";
   const col = isPos ? "#4ECB71" : "#FF6B6B";
   return (
-    <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: 16, padding: "14px 16px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.07)", animation: "fadeUp 0.3s ease both" }}>
+    <div style={{ background: "rgba(255,255,255,0.03)", borderRadius: 16, padding: "12px 14px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.07)", animation: "fadeUp 0.3s ease both" }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
         <Avatar letter={review.avatar} size={32} color={col} />
         <div style={{ flex: 1 }}>
@@ -136,7 +148,7 @@ function ReviewCard({ review, onHelpful }) {
       )}
       <button
         onClick={function() { if (!helped) { setHelped(true); onHelpful(review.id); } }}
-        style={{ background: helped ? "rgba(74,158,255,0.12)" : "transparent", border: "1px solid " + (helped ? "rgba(74,158,255,0.3)" : "rgba(255,255,255,0.1)"), borderRadius: 99, padding: "5px 12px", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 5, transition: "all 0.2s", fontFamily: "Syne, sans-serif" }}
+        style={{ background: helped ? "rgba(74,158,255,0.12)" : "transparent", border: "1px solid " + (helped ? "rgba(74,158,255,0.3)" : "rgba(255,255,255,0.1)"), borderRadius: 99, padding: "5px 12px", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 5, transition: "all 0.2s", fontFamily: "Inter, sans-serif" }}
       >
         <span style={{ fontSize: 12 }}>👍</span>
         <span style={{ fontSize: 11, fontWeight: 700, color: helped ? "#4A9EFF" : "rgba(255,255,255,0.3)" }}>Helpful · {review.helpful + (helped ? 1 : 0)}</span>
@@ -145,330 +157,235 @@ function ReviewCard({ review, onHelpful }) {
   );
 }
 
-function FoodCard({ item, onRate, onReviews, index }) {
+// ── REDDIT-STYLE FOOD CARD with inline vote + expandable reviews ──────────────
+
+function ReviewRow({ review, onHelpful }) {
+  const [helped, setHelped] = useState(false);
+  const isPos = review.vote === "up";
+  const col = isPos ? "#4ECB71" : "#FF6B6B";
+  return (
+    <div style={{ paddingTop: 12, borderTop: "1px solid rgba(255,255,255,0.05)" }}>
+      <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+        {/* Vote badge */}
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: col + "18", border: "1px solid " + col + "30", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, flexShrink: 0, marginTop: 1 }}>
+          {isPos ? "👍" : "👎"}
+        </div>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
+            <span style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.55)" }}>@{review.user}</span>
+            {review.tags && review.tags.slice(0,2).map(function(t) {
+              const ip = POS_TAGS.includes(t);
+              return <span key={t} style={{ fontSize: 10, padding: "1px 7px", borderRadius: 99, background: ip ? "rgba(78,203,113,0.12)" : "rgba(255,107,107,0.12)", color: ip ? "#4ECB71" : "#FF6B6B", fontWeight: 700 }}>{t}</span>;
+            })}
+            <span style={{ fontSize: 10, color: "rgba(255,255,255,0.18)", marginLeft: "auto" }}>{review.time}</span>
+          </div>
+          {review.text && (
+            <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", lineHeight: 1.55, margin: "0 0 6px", fontStyle: "italic", maxWidth: 260 }}>"{review.text}"</p>
+          )}
+          <button
+            onClick={function() { if (!helped) { setHelped(true); onHelpful(review.id); } }}
+            style={{ background: "none", border: "none", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 4, padding: 0, fontFamily: "Inter, sans-serif" }}
+          >
+            <span style={{ fontSize: 11, color: helped ? "#4A9EFF" : "rgba(255,255,255,0.2)", fontWeight: 700 }}>👍 Helpful · {review.helpful + (helped ? 1 : 0)}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
+  const [myVote, setMyVote] = useState(null);       // null | "up" | "down"
+  const [showReviews, setShowReviews] = useState(false);
+  const [showWriteReview, setShowWriteReview] = useState(false);
+  const [reviewText, setReviewText] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [submitted, setSubmitted] = useState(false);
+  const MAX_CHARS = 240;
+  const textRef = useRef(null);
+
+  const hallObj = DINING_HALLS.find(function(h) { return h.id === hall; });
+  const hallColor = hallObj ? hallObj.color : "#4ECB71";
+
   const topTag = Object.entries(item.tags).sort(function(a, b) { return b[1] - a[1]; })[0];
   const isPos = topTag && POS_TAGS.includes(topTag[0]);
-  const total = item.upvotes + item.downvotes;
-  const reviewsWithText = (item.reviews || []).filter(function(r) { return r.text; });
-  const latestReview = reviewsWithText[0];
+  const total = item.upvotes + item.downvotes + (myVote ? 1 : 0);
+  const upvotes = item.upvotes + (myVote === "up" ? 1 : 0);
+  const downvotes = item.downvotes + (myVote === "down" ? 1 : 0);
+  const pct = total === 0 ? 50 : Math.round((upvotes / total) * 100);
+  const pctColor = pct >= 80 ? "#4ECB71" : pct >= 55 ? "#FFD60A" : "#FF6B6B";
   const reviewCount = item.reviews ? item.reviews.length : 0;
 
+  function castVote(v) {
+    if (myVote) return; // already voted
+    setMyVote(v);
+    onSubmit(item.id, v, [], ""); // instant, no tags/review
+  }
+
+  function toggleTag(t) { setSelectedTags(function(p) { return p.includes(t) ? p.filter(function(x) { return x !== t; }) : [...p, t]; }); }
+
+  function postReview() {
+    if (!reviewText.trim()) return;
+    onSubmit(item.id, myVote || "up", selectedTags, reviewText.trim());
+    setSubmitted(true);
+    setShowWriteReview(false);
+    setReviewText("");
+    setSelectedTags([]);
+    setTimeout(function() { setSubmitted(false); }, 2000);
+  }
+
+  useEffect(function() {
+    if (showWriteReview && textRef.current) setTimeout(function() { if (textRef.current) textRef.current.focus(); }, 80);
+  }, [showWriteReview]);
+
   return (
-    <div
-      style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "16px 18px", marginBottom: 12, animation: "fadeUp 0.4s ease " + (index * 0.06) + "s both", backdropFilter: "blur(8px)", transition: "background 0.15s, border-color 0.15s" }}
-      onMouseEnter={function(e) { e.currentTarget.style.background = "rgba(255,255,255,0.07)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.14)"; }}
-      onMouseLeave={function(e) { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
-    >
-      <div onClick={function() { onRate(item); }} style={{ cursor: "pointer" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-          <div style={{ flex: 1 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <div style={{ width: 46, height: 46, borderRadius: 13, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0 }}>{item.emoji}</div>
-              <div>
-                <div style={{ fontWeight: 900, fontSize: 15, color: "#fff", fontFamily: "Syne, sans-serif", lineHeight: 1.2 }}>{item.name}</div>
-                <div style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", marginTop: 3 }}>{item.station} · {total} ratings</div>
-              </div>
-            </div>
-            {topTag && (
-              <div style={{ marginTop: 10 }}>
-                <span style={{ fontSize: 11, padding: "3px 10px", borderRadius: 99, background: isPos ? "rgba(78,203,113,0.15)" : "rgba(255,107,107,0.15)", color: isPos ? "#4ECB71" : "#FF6B6B", fontWeight: 700, border: "1px solid " + (isPos ? "rgba(78,203,113,0.3)" : "rgba(255,107,107,0.3)") }}>
-                  {topTag[0]} · {topTag[1]}
-                </span>
-              </div>
-            )}
-            <ScoreBar upvotes={item.upvotes} downvotes={item.downvotes} />
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, marginLeft: 14, flexShrink: 0, paddingTop: 4 }}>
-            <div style={{ fontSize: 16, color: "#4ECB71" }}>▲</div>
-            <div style={{ fontSize: 15, fontWeight: 900, color: "#4ECB71", fontFamily: "Syne, sans-serif" }}>{item.upvotes}</div>
-          </div>
+    <div style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.08)", borderRadius: 20, padding: "12px 14px", marginBottom: 10, animation: "fadeUp 0.4s ease " + (index * 0.05) + "s both", transition: "border-color 0.15s" }}>
+
+      {/* ── TOP ROW: emoji + name + VOTE BUTTONS ── */}
+      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+        {/* Food emoji */}
+        <div style={{ width: 42, height: 42, borderRadius: 12, background: "rgba(255,255,255,0.06)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, flexShrink: 0 }}>{item.emoji}</div>
+
+        {/* Name + station */}
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontWeight: 900, fontSize: 14, color: "#fff", fontFamily: "Inter, sans-serif", lineHeight: 1.2, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 160 }}>{item.name}</div>
+          <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", marginTop: 2 }}>{item.station}</div>
+        </div>
+
+        {/* ── VOTE BUTTONS — Reddit style ── */}
+        <div style={{ display: "flex", alignItems: "center", gap: 4, flexShrink: 0 }}>
+          <button
+            onClick={function() { castVote("up"); }}
+            style={{ width: 36, height: 36, borderRadius: 10, border: "1.5px solid " + (myVote === "up" ? "#4ECB71" : "rgba(255,255,255,0.1)"), background: myVote === "up" ? "rgba(78,203,113,0.18)" : "rgba(255,255,255,0.04)", cursor: myVote ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, transition: "all 0.15s", transform: myVote === "up" ? "scale(1.1)" : "" }}
+          >👍</button>
+          <div style={{ fontSize: 13, fontWeight: 900, color: pctColor, fontFamily: "Inter, sans-serif", minWidth: 28, textAlign: "center" }}>{pct}%</div>
+          <button
+            onClick={function() { castVote("down"); }}
+            style={{ width: 36, height: 36, borderRadius: 10, border: "1.5px solid " + (myVote === "down" ? "#FF6B6B" : "rgba(255,255,255,0.1)"), background: myVote === "down" ? "rgba(255,107,107,0.18)" : "rgba(255,255,255,0.04)", cursor: myVote ? "default" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 16, transition: "all 0.15s", transform: myVote === "down" ? "scale(1.1)" : "" }}
+          >👎</button>
         </div>
       </div>
 
-      <div style={{ height: 1, background: "rgba(255,255,255,0.05)", margin: "14px 0 12px" }} />
+      {/* ── TOP TAG + SCORE BAR ── */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10 }}>
+        {topTag && (
+          <span style={{ fontSize: 10, padding: "2px 7px", borderRadius: 99, background: isPos ? "rgba(78,203,113,0.12)" : "rgba(255,107,107,0.12)", color: isPos ? "#4ECB71" : "#FF6B6B", fontWeight: 700, border: "1px solid " + (isPos ? "rgba(78,203,113,0.2)" : "rgba(255,107,107,0.2)"), whiteSpace: "nowrap" }}>
+            {topTag[0]} · {topTag[1]}
+          </span>
+        )}
+        <div style={{ flex: 1, height: 3, background: "rgba(255,255,255,0.07)", borderRadius: 99, overflow: "hidden" }}>
+          <div style={{ height: "100%", width: pct + "%", background: pctColor, borderRadius: 99, transition: "width 0.4s ease" }} />
+        </div>
+        <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", whiteSpace: "nowrap" }}>{total} votes</span>
+      </div>
 
-      {latestReview && (
-        <div style={{ padding: "10px 12px", background: "rgba(255,255,255,0.03)", borderRadius: 12, borderLeft: "2.5px solid " + (latestReview.vote === "up" ? "rgba(78,203,113,0.5)" : "rgba(255,107,107,0.5)"), marginBottom: 10 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 5 }}>
-            <Avatar letter={latestReview.avatar} size={20} color={latestReview.vote === "up" ? "#4ECB71" : "#FF6B6B"} />
-            <span style={{ fontSize: 11, fontWeight: 800, color: "rgba(255,255,255,0.5)" }}>@{latestReview.user}</span>
-            <span style={{ fontSize: 13 }}>{latestReview.vote === "up" ? "👍" : "👎"}</span>
-            <span style={{ marginLeft: "auto", fontSize: 10, color: "rgba(255,255,255,0.2)" }}>{latestReview.time}</span>
-          </div>
-          <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", lineHeight: 1.55, margin: 0, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", fontStyle: "italic" }}>"{latestReview.text}"</p>
+      {/* ── BOTTOM ACTION ROW ── */}
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 10 }}>
+        {/* Vote confirmed badge */}
+        {myVote && !submitted && (
+          <span style={{ fontSize: 11, color: myVote === "up" ? "#4ECB71" : "#FF6B6B", fontWeight: 700 }}>
+            {myVote === "up" ? "👍 Voted" : "👎 Voted"}
+          </span>
+        )}
+        {submitted && <span style={{ fontSize: 11, color: "#4ECB71", fontWeight: 700 }}>📝 Review posted!</span>}
+
+        <div style={{ flex: 1 }} />
+
+        {/* Reviews toggle */}
+        <button
+          onClick={function() { setShowReviews(function(p) { return !p; }); setShowWriteReview(false); }}
+          style={{ display: "flex", alignItems: "center", gap: 5, background: showReviews ? "rgba(74,158,255,0.12)" : "transparent", border: "1px solid " + (showReviews ? "rgba(74,158,255,0.25)" : "rgba(255,255,255,0.08)"), borderRadius: 8, padding: "5px 10px", cursor: "pointer", fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}
+        >
+          <span style={{ fontSize: 12 }}>💬</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: showReviews ? "#4A9EFF" : "rgba(255,255,255,0.4)" }}>
+            {reviewCount > 0 ? reviewCount + " review" + (reviewCount !== 1 ? "s" : "") : "Reviews"}
+          </span>
+          <span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>{showReviews ? "▲" : "▼"}</span>
+        </button>
+
+        {/* Write review */}
+        <button
+          onClick={function() { setShowWriteReview(function(p) { return !p; }); setShowReviews(false); }}
+          style={{ display: "flex", alignItems: "center", gap: 5, background: showWriteReview ? hallColor + "18" : "transparent", border: "1px solid " + (showWriteReview ? hallColor + "40" : "rgba(255,255,255,0.08)"), borderRadius: 8, padding: "5px 10px", cursor: "pointer", fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}
+        >
+          <span style={{ fontSize: 11 }}>✏️</span>
+          <span style={{ fontSize: 11, fontWeight: 700, color: showWriteReview ? hallColor : "rgba(255,255,255,0.4)" }}>Review</span>
+        </button>
+      </div>
+
+      {/* ── INLINE REVIEWS ── */}
+      {showReviews && (
+        <div style={{ marginTop: 12, animation: "fadeUp 0.2s ease" }}>
+          {(!item.reviews || item.reviews.length === 0) ? (
+            <div style={{ textAlign: "center", padding: "16px 0", color: "rgba(255,255,255,0.2)", fontSize: 12 }}>No reviews yet — be the first ✍️</div>
+          ) : (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {item.reviews.map(function(r) { return <ReviewRow key={r.id} review={r} onHelpful={onHelpful} />; })}
+            </div>
+          )}
         </div>
       )}
 
-      <div style={{ display: "flex", gap: 8 }}>
-        <button
-          onClick={function() { onRate(item); }}
-          style={{ flex: 1, padding: "9px 0", borderRadius: 10, border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, transition: "all 0.15s", fontFamily: "Syne, sans-serif" }}
-          onMouseEnter={function(e) { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "#fff"; }}
-          onMouseLeave={function(e) { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.color = "rgba(255,255,255,0.5)"; }}
-        >
-          ✏️ Rate
-        </button>
-        <button
-          onClick={function() { onReviews(item); }}
-          style={{ flex: 1, padding: "9px 0", borderRadius: 10, border: "1px solid rgba(255,255,255,0.1)", background: "rgba(255,255,255,0.04)", color: "rgba(255,255,255,0.5)", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 5, transition: "all 0.15s", fontFamily: "Syne, sans-serif" }}
-          onMouseEnter={function(e) { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.color = "#fff"; }}
-          onMouseLeave={function(e) { e.currentTarget.style.background = "rgba(255,255,255,0.04)"; e.currentTarget.style.color = "rgba(255,255,255,0.5)"; }}
-        >
-          💬 {reviewCount > 0 ? reviewCount + " Review" + (reviewCount !== 1 ? "s" : "") : "Reviews"}
-        </button>
-      </div>
-    </div>
-  );
-}
-
-function ReviewsSheet({ item, hall, onClose, onStartRating, onHelpful }) {
-  const hallObj = DINING_HALLS.find(function(h) { return h.id === hall; });
-  const total = item.upvotes + item.downvotes;
-  const pct = total === 0 ? 50 : Math.round((item.upvotes / total) * 100);
-  const pctColor = pct >= 80 ? "#4ECB71" : pct >= 55 ? "#FFD60A" : "#FF6B6B";
-  const topTags = Object.entries(item.tags).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 5);
-
-  return (
-    <div style={{ position: "absolute", inset: 0, zIndex: 200, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-      <div onClick={onClose} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.72)", backdropFilter: "blur(4px)" }} />
-      <div style={{ position: "relative", background: "#0d0d1c", borderRadius: "28px 28px 0 0", maxHeight: "90vh", display: "flex", flexDirection: "column", animation: "slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1)", border: "1px solid rgba(255,255,255,0.1)", borderBottom: "none" }}>
-        <div style={{ padding: "16px 20px 0", flexShrink: 0 }}>
-          <div style={{ width: 40, height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 99, margin: "0 auto 18px" }} />
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-            <div style={{ width: 50, height: 50, borderRadius: 15, background: (hallObj ? hallObj.color : "#4ECB71") + "20", border: "1.5px solid " + (hallObj ? hallObj.color : "#4ECB71") + "30", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 26 }}>{item.emoji}</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 900, fontSize: 19, color: "#fff", fontFamily: "Syne, sans-serif" }}>{item.name}</div>
-              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", marginTop: 2 }}>{item.station} · {hallObj ? hallObj.name : ""}</div>
+      {/* ── INLINE WRITE REVIEW ── */}
+      {showWriteReview && (
+        <div style={{ marginTop: 12, animation: "fadeUp 0.2s ease" }}>
+          <div style={{ height: 1, background: "rgba(255,255,255,0.06)", marginBottom: 12 }} />
+          {/* Quick vote if not voted yet */}
+          {!myVote && (
+            <div style={{ marginBottom: 10 }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.25)", letterSpacing: 0.5, marginBottom: 6 }}>YOUR VOTE</div>
+              <div style={{ display: "flex", gap: 6 }}>
+                {[["up","👍 Love it","#4ECB71"],["down","👎 Not great","#FF6B6B"]].map(function(arr) {
+                  const v=arr[0],label=arr[1],col=arr[2];
+                  const sel = myVote === v;
+                  return (
+                    <button key={v} onClick={function(){ setMyVote(v); }}
+                      style={{ flex:1, padding:"8px 6px", borderRadius:10, border:"1.5px solid "+(sel?col:"rgba(255,255,255,0.1)"), background:sel?col+"18":"rgba(255,255,255,0.03)", cursor:"pointer", fontSize:12, fontWeight:800, color:sel?col:"rgba(255,255,255,0.5)", fontFamily:"Inter, sans-serif" }}>
+                      {label}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
-            <div style={{ textAlign: "right" }}>
-              <div style={{ fontWeight: 900, fontSize: 24, color: pctColor, fontFamily: "Syne, sans-serif", lineHeight: 1 }}>{pct}%</div>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.25)", marginTop: 2 }}>{total} ratings</div>
-            </div>
-          </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
-            {topTags.map(function(entry) {
-              const tag = entry[0]; const count = entry[1];
+          )}
+          {/* Tags */}
+          <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.25)", letterSpacing: 0.5, marginBottom: 6 }}>TAGS <span style={{ color:"rgba(255,255,255,0.13)" }}>optional</span></div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
+            {ALL_TAGS.map(function(tag) {
+              const sel = selectedTags.includes(tag);
               const ip = POS_TAGS.includes(tag);
               return (
-                <span key={tag} style={{ fontSize: 11, padding: "4px 10px", borderRadius: 99, background: ip ? "rgba(78,203,113,0.12)" : "rgba(255,107,107,0.12)", color: ip ? "#4ECB71" : "#FF6B6B", fontWeight: 700, border: "1px solid " + (ip ? "rgba(78,203,113,0.2)" : "rgba(255,107,107,0.2)") }}>
-                  {tag} · {count}
-                </span>
+                <button key={tag} onClick={function(){ toggleTag(tag); }}
+                  style={{ padding:"4px 9px", borderRadius:99, border:"1px solid "+(sel?(ip?"#4ECB71":"#FF6B6B"):"rgba(255,255,255,0.09)"), background:sel?(ip?"rgba(78,203,113,0.12)":"rgba(255,107,107,0.12)"):"rgba(255,255,255,0.03)", color:sel?(ip?"#4ECB71":"#FF6B6B"):"rgba(255,255,255,0.4)", fontSize:11, fontWeight:700, cursor:"pointer", fontFamily:"Inter, sans-serif" }}>
+                  {tag}
+                </button>
               );
             })}
           </div>
-          <button
-            onClick={onStartRating}
-            style={{ width: "100%", padding: "13px 0", borderRadius: 14, border: "none", background: "linear-gradient(135deg, " + (hallObj ? hallObj.color : "#4ECB71") + ", " + (hallObj ? hallObj.color : "#4ECB71") + "bb)", color: "#fff", fontWeight: 900, fontSize: 14, cursor: "pointer", marginBottom: 16, fontFamily: "Syne, sans-serif", boxShadow: "0 6px 20px " + (hallObj ? hallObj.color : "#4ECB71") + "35" }}
-          >
-            ✏️ Rate & Write a Review
-          </button>
-          <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.35)", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 12 }}>
-            {(item.reviews ? item.reviews.length : 0)} Student Reviews
+          {/* Text */}
+          <div style={{ position:"relative", marginBottom:8 }}>
+            <textarea ref={textRef} value={reviewText}
+              onChange={function(e){ if(e.target.value.length<=MAX_CHARS) setReviewText(e.target.value); }}
+              placeholder="What did you think?"
+              rows={3}
+              style={{ width:"100%", padding:"10px 10px 26px", background:"rgba(255,255,255,0.05)", border:"1.5px solid rgba(255,255,255,0.1)", borderRadius:10, color:"#fff", fontSize:13, lineHeight:1.55, resize:"none", outline:"none", fontFamily:"Inter, sans-serif", boxSizing:"border-box", transition:"border-color 0.2s" }}
+              onFocus={function(e){ e.target.style.borderColor=hallColor; }}
+              onBlur={function(e){ e.target.style.borderColor="rgba(255,255,255,0.1)"; }}
+            />
+            <div style={{ position:"absolute", bottom:8, right:10, fontSize:10, fontFamily:"monospace", fontWeight:700, color:reviewText.length>MAX_CHARS*0.85?"#FFD60A":"rgba(255,255,255,0.2)" }}>{reviewText.length}/{MAX_CHARS}</div>
           </div>
-        </div>
-        <div style={{ overflowY: "auto", padding: "0 20px 40px", flex: 1 }}>
-          {(!item.reviews || item.reviews.length === 0) ? (
-            <div style={{ textAlign: "center", padding: "36px 0", color: "rgba(255,255,255,0.2)" }}>
-              <div style={{ fontSize: 40, marginBottom: 12 }}>🍽️</div>
-              <div style={{ fontSize: 15, fontWeight: 700 }}>No reviews yet</div>
-              <div style={{ fontSize: 12, marginTop: 5, lineHeight: 1.5 }}>Be the first Wildcat to review this dish.</div>
-            </div>
-          ) : (
-            item.reviews.map(function(r) { return <ReviewCard key={r.id} review={r} onHelpful={onHelpful} />; })
-          )}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function RatingSheet({ item, hall, onClose, onSubmit }) {
-  const [step, setStep] = useState("vote");
-  const [vote, setVote] = useState(null);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [reviewText, setReviewText] = useState("");
-  const MAX_CHARS = 280;
-  const hallObj = DINING_HALLS.find(function(h) { return h.id === hall; });
-  const hallColor = hallObj ? hallObj.color : "#4ECB71";
-  const textRef = useRef(null);
-
-  useEffect(function() {
-    if (step === "review" && textRef.current) { setTimeout(function() { if (textRef.current) textRef.current.focus(); }, 150); }
-  }, [step]);
-
-  function toggleTag(tag) { setSelectedTags(function(p) { return p.includes(tag) ? p.filter(function(t) { return t !== tag; }) : [...p, tag]; }); }
-
-  function submitAll() {
-    onSubmit(item.id, vote, selectedTags, reviewText.trim());
-    setStep("done");
-    setTimeout(onClose, 1800);
-  }
-
-  const stepIndex = ["vote", "tags", "review", "done"].indexOf(step);
-
-  const VoteBtn = function(props) {
-    const sel = vote === props.v;
-    return (
-      <button
-        onClick={function() { setVote(props.v); }}
-        style={{ flex: 1, padding: "22px 12px", borderRadius: 20, border: "2px solid " + (sel ? props.col : "rgba(255,255,255,0.1)"), background: sel ? props.col + "18" : "rgba(255,255,255,0.03)", cursor: "pointer", transition: "all 0.18s", transform: sel ? "scale(1.04)" : "", fontFamily: "Syne, sans-serif", boxShadow: sel ? "0 8px 24px " + props.col + "30" : "none" }}
-      >
-        <div style={{ fontSize: 36, marginBottom: 8 }}>{props.emoji}</div>
-        <div style={{ fontSize: 15, fontWeight: 900, color: sel ? props.col : "rgba(255,255,255,0.6)" }}>{props.label}</div>
-        <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", marginTop: 4 }}>{props.sub}</div>
-      </button>
-    );
-  };
-
-  return (
-    <div style={{ position: "absolute", inset: 0, zIndex: 210, display: "flex", flexDirection: "column", justifyContent: "flex-end" }}>
-      <div onClick={step !== "done" ? onClose : undefined} style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.8)", backdropFilter: "blur(5px)" }} />
-      <div style={{ position: "relative", background: "#0d0d1c", borderRadius: "28px 28px 0 0", padding: "20px 22px 50px", maxHeight: "94vh", overflowY: "auto", animation: "slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1)", border: "1px solid rgba(255,255,255,0.1)", borderBottom: "none" }}>
-        <div style={{ width: 40, height: 4, background: "rgba(255,255,255,0.15)", borderRadius: 99, margin: "0 auto 16px" }} />
-
-        {step !== "done" && (
-          <div style={{ marginBottom: 22 }}>
-            <div style={{ display: "flex", gap: 6, marginBottom: 8 }}>
-              {["vote", "tags", "review"].map(function(s, i) {
-                return <div key={s} style={{ flex: 1, height: 3, borderRadius: 99, background: stepIndex > i ? hallColor : stepIndex === i ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.1)", transition: "background 0.3s" }} />;
-              })}
-            </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              {["1 · Vote", "2 · Tags", "3 · Review"].map(function(s, i) {
-                return <span key={s} style={{ fontSize: 10, fontWeight: 700, color: stepIndex === i ? "#fff" : stepIndex > i ? hallColor : "rgba(255,255,255,0.2)", letterSpacing: 0.3 }}>{s}</span>;
-              })}
-            </div>
-          </div>
-        )}
-
-        {step !== "done" && (
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24, padding: "12px 14px", background: "rgba(255,255,255,0.04)", borderRadius: 14, border: "1px solid rgba(255,255,255,0.07)" }}>
-            <div style={{ width: 44, height: 44, borderRadius: 12, background: hallColor + "18", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24 }}>{item.emoji}</div>
-            <div>
-              <div style={{ fontWeight: 900, fontSize: 16, color: "#fff", fontFamily: "Syne, sans-serif" }}>{item.name}</div>
-              <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 2 }}>
-                {step === "vote" && "Step 1 — How was it overall?"}
-                {step === "tags" && "Step 2 — What stood out?"}
-                {step === "review" && "Step 3 — Tell us more (optional)"}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {step === "vote" && (
-          <div>
-            <div style={{ display: "flex", gap: 12, marginBottom: 28 }}>
-              <VoteBtn v="up" emoji="👍" label="Love it" sub="Would eat again" col="#4ECB71" />
-              <VoteBtn v="down" emoji="👎" label="Not great" sub="Needs work" col="#FF6B6B" />
-            </div>
-            <button
-              onClick={function() { if (vote) setStep("tags"); }}
-              disabled={!vote}
-              style={{ width: "100%", padding: "15px 0", borderRadius: 14, border: "none", background: vote ? "linear-gradient(135deg, " + hallColor + ", " + hallColor + "bb)" : "rgba(255,255,255,0.07)", color: vote ? "#fff" : "rgba(255,255,255,0.2)", fontWeight: 900, fontSize: 15, cursor: vote ? "pointer" : "not-allowed", transition: "all 0.2s", fontFamily: "Syne, sans-serif", boxShadow: vote ? "0 8px 24px " + hallColor + "40" : "none" }}
-            >
-              Continue →
+          <div style={{ display:"flex", gap:8 }}>
+            <button onClick={function(){ setShowWriteReview(false); setReviewText(""); setSelectedTags([]); }}
+              style={{ padding:"9px 14px", borderRadius:10, border:"1px solid rgba(255,255,255,0.1)", background:"transparent", color:"rgba(255,255,255,0.3)", fontSize:12, fontWeight:700, cursor:"pointer", fontFamily:"Inter, sans-serif" }}>
+              Cancel
+            </button>
+            <button onClick={postReview} disabled={!reviewText.trim()}
+              style={{ flex:1, padding:"9px 0", borderRadius:10, border:"none", background:reviewText.trim()?"linear-gradient(135deg,#4ECB71,#1fa84a)":"rgba(255,255,255,0.07)", color:reviewText.trim()?"#fff":"rgba(255,255,255,0.2)", fontWeight:900, fontSize:13, cursor:reviewText.trim()?"pointer":"not-allowed", fontFamily:"Inter, sans-serif", transition:"all 0.2s" }}>
+              📝 Post Review
             </button>
           </div>
-        )}
-
-        {step === "tags" && (
-          <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.35)", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 14 }}>Select all that apply</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 9, marginBottom: 28 }}>
-              {ALL_TAGS.map(function(tag) {
-                const sel = selectedTags.includes(tag);
-                const ip = POS_TAGS.includes(tag);
-                return (
-                  <button
-                    key={tag}
-                    onClick={function() { toggleTag(tag); }}
-                    style={{ padding: "9px 14px", borderRadius: 99, border: "1.5px solid " + (sel ? (ip ? "#4ECB71" : "#FF6B6B") : "rgba(255,255,255,0.12)"), background: sel ? (ip ? "rgba(78,203,113,0.15)" : "rgba(255,107,107,0.15)") : "rgba(255,255,255,0.04)", color: sel ? (ip ? "#4ECB71" : "#FF6B6B") : "rgba(255,255,255,0.55)", fontSize: 13, fontWeight: 700, cursor: "pointer", transition: "all 0.15s", fontFamily: "Syne, sans-serif", transform: sel ? "scale(1.05)" : "" }}
-                  >
-                    {tag}
-                  </button>
-                );
-              })}
-            </div>
-            <div style={{ display: "flex", gap: 10 }}>
-              <button onClick={function() { setStep("vote"); }} style={{ padding: "14px 20px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.12)", background: "transparent", color: "rgba(255,255,255,0.4)", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Syne, sans-serif" }}>← Back</button>
-              <button
-                onClick={function() { setStep("review"); }}
-                style={{ flex: 1, padding: "14px 0", borderRadius: 14, border: "none", background: "linear-gradient(135deg, " + hallColor + ", " + hallColor + "bb)", color: "#fff", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Syne, sans-serif", boxShadow: "0 8px 24px " + hallColor + "35" }}
-              >
-                {selectedTags.length === 0 ? "Skip →" : "Next → (" + selectedTags.length + " selected)"}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {step === "review" && (
-          <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 7, flexWrap: "wrap", marginBottom: 18 }}>
-              <span style={{ padding: "5px 12px", borderRadius: 99, background: vote === "up" ? "rgba(78,203,113,0.12)" : "rgba(255,107,107,0.12)", color: vote === "up" ? "#4ECB71" : "#FF6B6B", fontSize: 12, fontWeight: 800, border: "1px solid " + (vote === "up" ? "rgba(78,203,113,0.25)" : "rgba(255,107,107,0.25)") }}>
-                {vote === "up" ? "👍 Loved it" : "👎 Not great"}
-              </span>
-              {selectedTags.slice(0, 2).map(function(t) {
-                return <span key={t} style={{ padding: "5px 10px", borderRadius: 99, background: "rgba(255,255,255,0.06)", color: "rgba(255,255,255,0.5)", fontSize: 11, fontWeight: 700, border: "1px solid rgba(255,255,255,0.1)" }}>{t}</span>;
-              })}
-              {selectedTags.length > 2 && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>+{selectedTags.length - 2} more</span>}
-            </div>
-
-            <div style={{ position: "relative", marginBottom: 12 }}>
-              <textarea
-                ref={textRef}
-                value={reviewText}
-                onChange={function(e) { if (e.target.value.length <= MAX_CHARS) setReviewText(e.target.value); }}
-                placeholder={vote === "up" ? "What made it great? Any tips for the next Wildcat?" : "What was off about it? Help Levi improve."}
-                rows={5}
-                style={{ width: "100%", padding: "14px 14px 36px", background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.1)", borderRadius: 16, color: "#fff", fontSize: 14, lineHeight: 1.65, resize: "none", outline: "none", fontFamily: "Syne, sans-serif", boxSizing: "border-box", transition: "border-color 0.2s" }}
-                onFocus={function(e) { e.target.style.borderColor = hallColor; }}
-                onBlur={function(e) { e.target.style.borderColor = "rgba(255,255,255,0.1)"; }}
-              />
-              <div style={{ position: "absolute", bottom: 12, right: 14, fontSize: 11, fontFamily: "monospace", fontWeight: 700, color: reviewText.length > MAX_CHARS * 0.85 ? (reviewText.length === MAX_CHARS ? "#FF6B6B" : "#FFD60A") : "rgba(255,255,255,0.2)" }}>
-                {reviewText.length}/{MAX_CHARS}
-              </div>
-            </div>
-
-            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", marginBottom: 22, lineHeight: 1.6, display: "flex", gap: 6 }}>
-              <span>🔒</span>
-              <span>Your review posts with your username and is shared with Levi Restaurant Associates to help reduce food waste.</span>
-            </div>
-
-            <div style={{ display: "flex", gap: 10 }}>
-              <button onClick={function() { setStep("tags"); }} style={{ padding: "14px 20px", borderRadius: 14, border: "1px solid rgba(255,255,255,0.12)", background: "transparent", color: "rgba(255,255,255,0.4)", fontWeight: 700, fontSize: 14, cursor: "pointer", fontFamily: "Syne, sans-serif" }}>← Back</button>
-              <button
-                onClick={submitAll}
-                style={{ flex: 1, padding: "14px 0", borderRadius: 14, border: "none", background: "linear-gradient(135deg, #4ECB71, #1fa84a)", color: "#fff", fontWeight: 900, fontSize: 15, cursor: "pointer", fontFamily: "Syne, sans-serif", boxShadow: "0 8px 24px rgba(78,203,113,0.35)" }}
-              >
-                {reviewText.trim().length > 0 ? "📝 Post Review" : "Submit Rating Only"}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {step === "done" && (
-          <div style={{ textAlign: "center", padding: "28px 0 14px" }}>
-            <div style={{ fontSize: 64, marginBottom: 16, display: "inline-block", animation: "pop 0.45s cubic-bezier(0.34,1.56,0.64,1)" }}>
-              {reviewText.trim().length > 0 ? "🎉" : "✅"}
-            </div>
-            <div style={{ fontWeight: 900, fontSize: 24, color: "#fff", fontFamily: "Syne, sans-serif", marginBottom: 10 }}>
-              {reviewText.trim().length > 0 ? "Review posted!" : "Rating saved!"}
-            </div>
-            <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", lineHeight: 1.7, maxWidth: 260, margin: "0 auto" }}>
-              {reviewText.trim().length > 0
-                ? "Your review helps fellow Wildcats and gives Levi real, actionable feedback."
-                : "Your vote is counted and instantly visible in Levi's analytics."}
-            </div>
-            {selectedTags.length > 0 && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 7, justifyContent: "center", marginTop: 18 }}>
-                {selectedTags.slice(0, 3).map(function(t) {
-                  return <span key={t} style={{ padding: "5px 12px", borderRadius: 99, background: POS_TAGS.includes(t) ? "rgba(78,203,113,0.15)" : "rgba(255,107,107,0.15)", color: POS_TAGS.includes(t) ? "#4ECB71" : "#FF6B6B", fontSize: 12, fontWeight: 700 }}>{t}</span>;
-                })}
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -480,13 +397,13 @@ function GeoPromptBanner({ hall, onAccept, onDismiss }) {
         <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
           <div style={{ width: 42, height: 42, borderRadius: 14, background: hall.color + "20", border: "2px solid " + hall.color, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>{hall.emoji}</div>
           <div>
-            <div style={{ color: "#fff", fontWeight: 800, fontSize: 15, fontFamily: "Syne, sans-serif" }}>📍 You're near {hall.name}!</div>
+            <div style={{ color: "#fff", fontWeight: 800, fontSize: 15, fontFamily: "Inter, sans-serif" }}>📍 You're near {hall.name}!</div>
             <div style={{ color: "rgba(255,255,255,0.5)", fontSize: 12, marginTop: 2 }}>{hall.distance}m away · {hall.isOpen ? "Open now" : "Currently closed"}</div>
           </div>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          <button onClick={onAccept} style={{ flex: 1, padding: "11px 0", borderRadius: 12, border: "none", background: hall.color, color: "#fff", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "Syne, sans-serif", boxShadow: "0 4px 14px " + hall.color + "55" }}>View {hall.name} Menu →</button>
-          <button onClick={onDismiss} style={{ padding: "11px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", background: "transparent", color: "rgba(255,255,255,0.6)", fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "Syne, sans-serif" }}>Dismiss</button>
+          <button onClick={onAccept} style={{ flex: 1, padding: "11px 0", borderRadius: 12, border: "none", background: hall.color, color: "#fff", fontWeight: 800, fontSize: 13, cursor: "pointer", fontFamily: "Inter, sans-serif", boxShadow: "0 4px 14px " + hall.color + "55" }}>View {hall.name} Menu →</button>
+          <button onClick={onDismiss} style={{ padding: "11px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.15)", background: "transparent", color: "rgba(255,255,255,0.6)", fontWeight: 600, fontSize: 13, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>Dismiss</button>
         </div>
       </div>
     </div>
@@ -514,13 +431,13 @@ function AnalyticsDashboard({ menu }) {
     <div style={{ padding: "0 16px 100px" }}>
       <div style={{ marginBottom: 16 }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 }}>Levi Insights</div>
-        <div style={{ fontSize: 24, fontWeight: 900, color: "#fff", fontFamily: "Syne, sans-serif" }}>Analytics Dashboard</div>
+        <div style={{ fontSize: 24, fontWeight: 900, color: "#fff", fontFamily: "Inter, sans-serif" }}>Analytics Dashboard</div>
       </div>
       <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
         {[[String(totalRatings), "Ratings", "↑ 23% this week"], [String(totalReviews), "Reviews", "With written text"], ["5", "Halls", "All tracked"]].map(function(item) {
           return (
             <div key={item[1]} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 16, padding: "14px 12px", flex: 1, border: "1px solid rgba(255,255,255,0.08)" }}>
-              <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", fontFamily: "Syne, sans-serif" }}>{item[0]}</div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", fontFamily: "Inter, sans-serif" }}>{item[0]}</div>
               <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", marginTop: 2 }}>{item[1]}</div>
               <div style={{ fontSize: 10, color: "#4ECB71", marginTop: 4, fontWeight: 700 }}>{item[2]}</div>
             </div>
@@ -528,7 +445,7 @@ function AnalyticsDashboard({ menu }) {
         })}
       </div>
       <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 16, fontFamily: "Syne, sans-serif" }}>Hall Approval Ratings</div>
+        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 16, fontFamily: "Inter, sans-serif" }}>Hall Approval Ratings</div>
         {hallStats.map(function(h) {
           const col = h.score >= 80 ? "#4ECB71" : h.score >= 55 ? "#FFD60A" : "#FF6B6B";
           return (
@@ -539,7 +456,7 @@ function AnalyticsDashboard({ menu }) {
                   <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.8)" }}>{h.name}</span>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <span style={{ fontSize: 10, color: "rgba(255,255,255,0.25)" }}>💬 {h.reviewCount}</span>
-                    <span style={{ fontSize: 12, fontWeight: 900, color: col, fontFamily: "Syne, sans-serif" }}>{h.score}%</span>
+                    <span style={{ fontSize: 12, fontWeight: 900, color: col, fontFamily: "Inter, sans-serif" }}>{h.score}%</span>
                   </div>
                 </div>
                 <div style={{ height: 5, background: "rgba(255,255,255,0.08)", borderRadius: 99, overflow: "hidden" }}>
@@ -552,7 +469,7 @@ function AnalyticsDashboard({ menu }) {
         })}
       </div>
       <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Syne, sans-serif" }}>🏆 Most Loved Items</div>
+        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Inter, sans-serif" }}>🏆 Most Loved Items</div>
         {topItems.map(function(item, i) {
           const hall = DINING_HALLS.find(function(h) { return h.id === item.hallId; });
           const revCount = item.reviews ? item.reviews.filter(function(r) { return r.text; }).length : 0;
@@ -564,14 +481,14 @@ function AnalyticsDashboard({ menu }) {
                 <div style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{item.name}</div>
                 <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>{hall ? hall.name : ""} · 💬 {revCount} reviews</div>
               </div>
-              <div style={{ fontWeight: 900, fontSize: 13, color: "#4ECB71", fontFamily: "Syne, sans-serif" }}>👍 {item.upvotes}</div>
+              <div style={{ fontWeight: 900, fontSize: 13, color: "#4ECB71", fontFamily: "Inter, sans-serif" }}>👍 {item.upvotes}</div>
             </div>
           );
         })}
       </div>
       {recentReviews.length > 0 && (
         <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
-          <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Syne, sans-serif" }}>💬 Latest Student Reviews</div>
+          <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Inter, sans-serif" }}>💬 Latest Student Reviews</div>
           {recentReviews.map(function(r, i) {
             return (
               <div key={r.id} style={{ padding: "10px 0", borderBottom: i < recentReviews.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none" }}>
@@ -588,7 +505,7 @@ function AnalyticsDashboard({ menu }) {
         </div>
       )}
       <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
-        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Syne, sans-serif" }}>🔖 Top Feedback Tags</div>
+        <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Inter, sans-serif" }}>🔖 Top Feedback Tags</div>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
           {topTags.map(function(entry) {
             const tag = entry[0]; const count = entry[1]; const ip = POS_TAGS.includes(tag);
@@ -633,8 +550,6 @@ export default function App() {
   const [selectedHall, setSelectedHall] = useState("allison");
   const [menu, setMenu] = useState(SEED_MENU);
   const [activity, setActivity] = useState(SEED_ACTIVITY);
-  const [ratingItem, setRatingItem] = useState(null);
-  const [reviewsItem, setReviewsItem] = useState(null);
   const [sortBy, setSortBy] = useState("top");
   const [toast, setToast] = useState(null);
   const [geoState, setGeoState] = useState("idle");
@@ -642,23 +557,75 @@ export default function App() {
   const [geoPrompt, setGeoPrompt] = useState(null);
   const [dismissedPrompt, setDismissedPrompt] = useState(null);
   const watchRef = useRef(null);
+  const insideHallRef = useRef(null); // tracks which hall user is currently inside
+  const exitTimerRef = useRef(null);  // debounce so brief GPS drift doesn't fire
 
   const showToast = useCallback(function(msg) { setToast(msg); setTimeout(function() { setToast(null); }, 2400); }, []);
+
+  function requestNotificationPermission(hallName, hallId) {
+    if (!("Notification" in window)) return;
+    if (Notification.permission === "granted") {
+      fireRatingNotification(hallName, hallId);
+    } else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(function(perm) {
+        if (perm === "granted") fireRatingNotification(hallName, hallId);
+      });
+    }
+  }
+
+  function fireRatingNotification(hallName, hallId) {
+    try {
+      var n = new Notification("How was " + hallName + "? 🍽️", {
+        body: "Rate today's dishes before you forget — takes 2 seconds.",
+        icon: "/favicon.ico",
+        tag: "ozzi-rating-" + hallId,
+        renotify: false,
+      });
+      n.onclick = function() { window.focus(); setTab("feed"); setSelectedHall(hallId); };
+    } catch(e) {}
+  }
 
   function handleGeoSuccess(pos) {
     var lat = pos.coords.latitude; var lng = pos.coords.longitude;
     setGeoState("granted");
     var halls = getNearbyHalls(lat, lng);
     var closest = halls[0];
-    if (closest.distance <= closest.radius) {
-      setNearbyHall(closest);
-      if (closest.id !== dismissedPrompt) setGeoPrompt(closest);
-    } else { setNearbyHall(null); setGeoPrompt(null); }
+    var nowInside = closest.distance <= closest.radius ? closest : null;
+    var prevHallId = insideHallRef.current ? insideHallRef.current.id : null;
+    var nowHallId = nowInside ? nowInside.id : null;
+
+    if (nowInside) {
+      // Entered or still inside a hall
+      if (exitTimerRef.current) { clearTimeout(exitTimerRef.current); exitTimerRef.current = null; }
+      insideHallRef.current = nowInside;
+      setNearbyHall(nowInside);
+      if (nowInside.id !== dismissedPrompt) setGeoPrompt(nowInside);
+    } else {
+      // Outside all halls — if we WERE inside one, start exit timer
+      setNearbyHall(null);
+      setGeoPrompt(null);
+      if (prevHallId && !exitTimerRef.current) {
+        var leftHall = insideHallRef.current;
+        exitTimerRef.current = setTimeout(function() {
+          // Confirm still outside after 45s (avoid GPS jitter triggering it)
+          insideHallRef.current = null;
+          exitTimerRef.current = null;
+          requestNotificationPermission(leftHall.name, leftHall.id);
+          showToast("📍 Left " + leftHall.name + " — how was it?");
+          setSelectedHall(leftHall.id);
+          setTab("feed");
+        }, 45000); // 45 second debounce — confirmed exit
+      }
+    }
   }
 
   function requestGeo() {
     if (!navigator.geolocation) return showToast("Geolocation not supported");
     setGeoState("requesting");
+    // Pre-request notification permission so the prompt comes before they leave
+    if ("Notification" in window && Notification.permission === "default") {
+      Notification.requestPermission();
+    }
     navigator.geolocation.getCurrentPosition(handleGeoSuccess, function() { setGeoState("denied"); showToast("📍 Location denied — browse from anywhere!"); }, { enableHighAccuracy: true, timeout: 8000 });
     if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current);
     watchRef.current = navigator.geolocation.watchPosition(handleGeoSuccess, function() {}, { maximumAge: 30000 });
@@ -670,7 +637,12 @@ export default function App() {
     showToast("📍 Simulating near " + hall.name);
   }
 
-  useEffect(function() { return function() { if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current); }; }, []);
+  useEffect(function() {
+    return function() {
+      if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current);
+      if (exitTimerRef.current) clearTimeout(exitTimerRef.current);
+    };
+  }, []);
 
   function handleSubmit(itemId, vote, tags, reviewText) {
     var hasReview = reviewText.trim().length > 0;
@@ -724,13 +696,12 @@ export default function App() {
     return (b.upvotes - b.downvotes) - (a.upvotes - a.downvotes);
   });
   var currentHall = DINING_HALLS.find(function(h) { return h.id === selectedHall; });
-  var liveReviewsItem = reviewsItem ? Object.values(menu).flat().find(function(i) { return i.id === reviewsItem.id; }) || reviewsItem : null;
 
   return (
     <PhoneFrame>
-    <div style={{ fontFamily: "Syne, sans-serif", width: "100%", minHeight: "100vh", background: "#0a0a14", position: "relative", display: "flex", flexDirection: "column", color: "#fff" }}>
+    <div style={{ fontFamily: "Inter, sans-serif", width: "100%", minHeight: "100vh", background: "#0a0a14", position: "relative", display: "flex", flexDirection: "column", color: "#fff" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html, body, #root { background: #050509; min-height: 100vh; }
         ::-webkit-scrollbar { display: none; }
@@ -739,6 +710,7 @@ export default function App() {
         @keyframes fadeUp { from { opacity:0; transform:translateY(14px) } to { opacity:1; transform:translateY(0) } }
         @keyframes pop { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        @keyframes popIn { from{opacity:0; transform:scale(0.92)} to{opacity:1; transform:scale(1)} }
         @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
         textarea::placeholder { color: rgba(255,255,255,0.2); }
         textarea { caret-color: #4ECB71; }
@@ -763,8 +735,8 @@ export default function App() {
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ width: 34, height: 34, borderRadius: 11, background: "linear-gradient(135deg, #4ECB71, #4A9EFF)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>🍱</div>
             <div>
-              <div style={{ fontWeight: 900, fontSize: 20, letterSpacing: "-0.5px", lineHeight: 1 }}>DormDash</div>
-              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 600, letterSpacing: 0.5 }}>NORTHWESTERN DINING</div>
+              <div style={{ fontWeight: 900, fontSize: 20, letterSpacing: "-0.5px", lineHeight: 1 }}>Ozzi</div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 600, letterSpacing: 0.5 }}>NORTHWESTERN · DINING</div>
             </div>
           </div>
           {geoState === "requesting" && <div style={{ width: 8, height: 8, borderRadius: 99, background: "#FFD60A", animation: "pulse 1s infinite" }} />}
@@ -778,7 +750,7 @@ export default function App() {
         <div style={{ display: "flex" }}>
           {[["feed", "🍽️ Menu"], ["activity", "⚡ Live"], ["analytics", "📊 Insights"]].map(function(item) {
             return (
-              <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ flex: 1, padding: "10px 0", border: "none", background: "none", cursor: "pointer", fontSize: 12, fontWeight: tab === item[0] ? 800 : 600, color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", borderBottom: "2px solid " + (tab === item[0] ? "#4ECB71" : "transparent"), transition: "all 0.2s", fontFamily: "Syne, sans-serif" }}>
+              <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ flex: 1, padding: "10px 0", border: "none", background: "none", cursor: "pointer", fontSize: 12, fontWeight: tab === item[0] ? 800 : 600, color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", borderBottom: "2px solid " + (tab === item[0] ? "#4ECB71" : "transparent"), transition: "all 0.2s", fontFamily: "Inter, sans-serif" }}>
                 {item[1]}
               </button>
             );
@@ -791,7 +763,7 @@ export default function App() {
           <div style={{ padding: "16px 16px 120px" }}>
             <button
               onClick={requestGeo}
-              style={{ width: "100%", padding: "10px 14px", background: geoState === "granted" ? "rgba(78,203,113,0.07)" : "rgba(255,255,255,0.03)", border: "1px solid " + (geoState === "granted" ? "rgba(78,203,113,0.22)" : "rgba(255,255,255,0.07)"), borderRadius: 12, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: 14, fontFamily: "Syne, sans-serif", transition: "all 0.15s" }}
+              style={{ width: "100%", padding: "10px 14px", background: geoState === "granted" ? "rgba(78,203,113,0.07)" : "rgba(255,255,255,0.03)", border: "1px solid " + (geoState === "granted" ? "rgba(78,203,113,0.22)" : "rgba(255,255,255,0.07)"), borderRadius: 12, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: 14, fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}
             >
               <span style={{ fontSize: 14 }}>{geoState === "granted" ? "📍" : geoState === "denied" ? "🚫" : "🔍"}</span>
               <span style={{ fontSize: 12, fontWeight: 600, color: geoState === "granted" ? "#4ECB71" : "rgba(255,255,255,0.38)", flex: 1, textAlign: "left" }}>
@@ -805,7 +777,7 @@ export default function App() {
                 <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>Demo: simulate location</div>
                 <div style={{ display: "flex", gap: 8, overflowX: "auto" }}>
                   {DINING_HALLS.slice(0, 3).map(function(h) {
-                    return <button key={h.id} onClick={function() { simulateLocation(h.id); }} style={{ flexShrink: 0, padding: "6px 12px", borderRadius: 99, border: "1px solid " + h.color + "40", background: h.color + "15", color: h.color, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Syne, sans-serif" }}>📍 {h.name}</button>;
+                    return <button key={h.id} onClick={function() { simulateLocation(h.id); }} style={{ flexShrink: 0, padding: "6px 12px", borderRadius: 99, border: "1px solid " + h.color + "40", background: h.color + "15", color: h.color, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>📍 {h.name}</button>;
                   })}
                 </div>
               </div>
@@ -816,7 +788,7 @@ export default function App() {
                 var sel = selectedHall === hall.id;
                 var isNearby = nearbyHall && nearbyHall.id === hall.id;
                 return (
-                  <button key={hall.id} onClick={function() { setSelectedHall(hall.id); }} style={{ flexShrink: 0, padding: "8px 14px", borderRadius: 14, border: "1.5px solid " + (sel ? hall.color : "rgba(255,255,255,0.1)"), background: sel ? hall.color + "18" : "rgba(255,255,255,0.04)", cursor: "pointer", transition: "all 0.15s", fontFamily: "Syne, sans-serif", position: "relative" }}>
+                  <button key={hall.id} onClick={function() { setSelectedHall(hall.id); }} style={{ flexShrink: 0, padding: "8px 14px", borderRadius: 14, border: "1.5px solid " + (sel ? hall.color : "rgba(255,255,255,0.1)"), background: sel ? hall.color + "18" : "rgba(255,255,255,0.04)", cursor: "pointer", transition: "all 0.15s", fontFamily: "Inter, sans-serif", position: "relative" }}>
                     {isNearby && <div style={{ position: "absolute", top: -4, right: -4, width: 10, height: 10, borderRadius: 99, background: "#4ECB71", border: "2px solid #0a0a14" }} />}
                     <div style={{ fontSize: 18 }}>{hall.emoji}</div>
                     <div style={{ fontSize: 10, fontWeight: sel ? 800 : 600, color: sel ? hall.color : "rgba(255,255,255,0.4)", marginTop: 3, whiteSpace: "nowrap" }}>{hall.name}</div>
@@ -834,13 +806,13 @@ export default function App() {
               </div>
               <div style={{ display: "flex", gap: 6 }}>
                 {[["top", "🔥"], ["new", "✨"], ["best", "⭐"]].map(function(item) {
-                  return <button key={item[0]} onClick={function() { setSortBy(item[0]); }} style={{ padding: "5px 10px", borderRadius: 99, border: "1px solid", borderColor: sortBy === item[0] ? "#4ECB71" : "rgba(255,255,255,0.1)", background: sortBy === item[0] ? "rgba(78,203,113,0.15)" : "transparent", color: sortBy === item[0] ? "#4ECB71" : "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Syne, sans-serif" }}>{item[1]} {item[0]}</button>;
+                  return <button key={item[0]} onClick={function() { setSortBy(item[0]); }} style={{ padding: "5px 10px", borderRadius: 99, border: "1px solid", borderColor: sortBy === item[0] ? "#4ECB71" : "rgba(255,255,255,0.1)", background: sortBy === item[0] ? "rgba(78,203,113,0.15)" : "transparent", color: sortBy === item[0] ? "#4ECB71" : "rgba(255,255,255,0.4)", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>{item[1]} {item[0]}</button>;
                 })}
               </div>
             </div>
 
             {sorted.map(function(item, i) {
-              return <FoodCard key={item.id} item={item} onRate={setRatingItem} onReviews={setReviewsItem} index={i} />;
+              return <FoodCard key={item.id} item={item} hall={selectedHall} onSubmit={handleSubmit} onHelpful={handleHelpful} index={i} />;
             })}
           </div>
         )}
@@ -851,7 +823,7 @@ export default function App() {
             <div style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", marginBottom: 18 }}>What Wildcats are rating right now</div>
             {activity.map(function(evt, i) {
               return (
-                <div key={evt.id} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 16, padding: "14px 16px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.07)", display: "flex", gap: 12, alignItems: "flex-start", animation: "fadeUp 0.3s ease " + Math.min(i, 5) * 0.07 + "s both" }}>
+                <div key={evt.id} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 16, padding: "12px 14px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.07)", display: "flex", gap: 12, alignItems: "flex-start", animation: "fadeUp 0.3s ease " + Math.min(i, 5) * 0.07 + "s both" }}>
                   <div style={{ width: 38, height: 38, borderRadius: 12, background: evt.vote === "up" ? "rgba(78,203,113,0.15)" : "rgba(255,107,107,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>
                     {evt.vote === "up" ? "👍" : "👎"}
                   </div>
@@ -889,7 +861,7 @@ export default function App() {
       <div style={{ position: "sticky", bottom: 0, width: "100%", background: "rgba(10,10,20,0.96)", backdropFilter: "blur(16px)", borderTop: "1px solid rgba(255,255,255,0.07)", padding: "10px 20px 24px", display: "flex", justifyContent: "space-around", zIndex: 50 }}>
         {[["feed", "🍽️", "Menu"], ["activity", "⚡", "Live"], ["analytics", "📊", "Insights"]].map(function(item) {
           return (
-            <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, background: "none", border: "none", cursor: "pointer", color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", fontFamily: "Syne, sans-serif", transition: "color 0.2s" }}>
+            <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, background: "none", border: "none", cursor: "pointer", color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", fontFamily: "Inter, sans-serif", transition: "color 0.2s" }}>
               <span style={{ fontSize: 22 }}>{item[1]}</span>
               <span style={{ fontSize: 10, fontWeight: tab === item[0] ? 800 : 600 }}>{item[2]}</span>
             </button>
@@ -897,24 +869,6 @@ export default function App() {
         })}
       </div>
 
-      {liveReviewsItem && !ratingItem && (
-        <ReviewsSheet
-          item={liveReviewsItem}
-          hall={selectedHall}
-          onClose={function() { setReviewsItem(null); }}
-          onStartRating={function() { setRatingItem(liveReviewsItem); setReviewsItem(null); }}
-          onHelpful={handleHelpful}
-        />
-      )}
-
-      {ratingItem && (
-        <RatingSheet
-          item={ratingItem}
-          hall={selectedHall}
-          onClose={function() { setRatingItem(null); }}
-          onSubmit={handleSubmit}
-        />
-      )}
     </div>
     </PhoneFrame>
   );
