@@ -1,14 +1,14 @@
-# DormDash 🍱
+# ozzi 🍱
 
 > Real-time dining hall ratings for Northwestern students — built to reduce food waste and help Wildcats eat better.
 
-**[Live Demo →](https://dormdash.vercel.app)**
+**[Live Demo →](https://ozzi.vercel.app)**
 
 ---
 
 ## What it is
 
-DormDash is a mobile-first web app that lets Northwestern students rate dining hall food in seconds. Think Reddit upvotes meets Yelp reviews, designed for the 30-second window between getting your food and sitting down.
+ozzi is a mobile-first web app that lets Northwestern students rate dining hall food in seconds. Think Reddit upvotes meets Yelp reviews, designed for the 30-second window between getting your food and sitting down.
 
 Ratings feed directly into a live analytics dashboard for Levi Restaurant Associates so they can see what's working, what isn't, and where food is going to waste.
 
@@ -46,8 +46,8 @@ Ratings feed directly into a live analytics dashboard for Levi Restaurant Associ
 ## Running locally
 
 ```bash
-git clone https://github.com/coreyczhang/dormdash.git
-cd dormdash
+git clone https://github.com/coreyczhang/ozzi.git
+cd ozzi
 npm install
 npm run dev
 ```
