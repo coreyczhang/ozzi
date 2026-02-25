@@ -2,7 +2,7 @@
 
 > Real-time dining hall ratings for Northwestern students — built to reduce food waste and help Wildcats eat better.
 
-**[Live Demo →](https://ozzi.vercel.app)**
+**[Live Demo →]([https://ozzi.vercel.app](https://ozzi-corzha007-8912-corzha007-8912s-projects.vercel.app/))**
 
 ---
 
