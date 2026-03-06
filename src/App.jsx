@@ -382,7 +382,7 @@ function GeoPromptBanner({ hall, onAccept, onDismiss }) {
 }
 
 function AnalyticsDashboard({ menu }) {
- const allItems = Object.entries(menu).flatMap(function(entry) { return entry[1].map(function(i) { return Object.assign(, i, { hallId: entry[0] }); }); });
+ const allItems = Object.entries(menu).flatMap(function(entry) { return entry[1].map(function(i) { return Object.assign({}, i, { hallId: entry[0] }); }); });
  const totalRatings = allItems.reduce(function(s, i) { return s + i.upvotes + i.downvotes; }, 0);
  const totalReviews = allItems.reduce(function(s, i) { return s + (i.reviews ? i.reviews.filter(function(r) { return r.text; }).length : 0); }, 0);
  const topItems = allItems.slice().sort(function(a, b) { return b.upvotes - a.upvotes; }).slice(0, 5);
@@ -394,9 +394,9 @@ function AnalyticsDashboard({ menu }) {
  const ups = items.reduce(function(s, i) { return s + i.upvotes; }, 0);
  const total = items.reduce(function(s, i) { return s + i.upvotes + i.downvotes; }, 0);
  const revCount = items.reduce(function(s, i) { return s + (i.reviews ? i.reviews.filter(function(r) { return r.text; }).length : 0); }, 0);
- return Object.assign(, h, { score: total === 0 ? 0 : Math.round((ups / total) * 100), ratingCount: total, reviewCount: revCount });
+ return Object.assign({}, h, { score: total === 0 ? 0 : Math.round((ups / total) * 100), ratingCount: total, reviewCount: revCount });
  }).sort(function(a, b) { return b.score - a.score; });
- const recentReviews = allItems.flatMap(function(i) { return (i.reviews || []).filter(function(r) { return r.text; }).map(function(r) { return Object.assign(, r, { itemName: i.name, itemEmoji: i.emoji }); }); }).slice(0, 4);
+ const recentReviews = allItems.flatMap(function(i) { return (i.reviews || []).filter(function(r) { return r.text; }).map(function(r) { return Object.assign({}, r, { itemName: i.name, itemEmoji: i.emoji }); }); }).slice(0, 4);
 
  return (
  <div style={{ padding: "0 16px 100px" }}>
@@ -770,7 +770,7 @@ export default function App() {
  renotify: false,
  });
  n.onclick = function() { window.focus(); setTab("feed"); setSelectedHall(hallId); };
- } catch(e) 
+ } catch(e) {}
  }
 
  function handleGeoSuccess(pos) {
@@ -816,7 +816,7 @@ export default function App() {
  }
  navigator.geolocation.getCurrentPosition(handleGeoSuccess, function() { setGeoState("denied"); showToast("Location denied — browse from anywhere!"); }, { enableHighAccuracy: true, timeout: 8000 });
  if (watchRef.current) navigator.geolocation.clearWatch(watchRef.current);
- watchRef.current = navigator.geolocation.watchPosition(handleGeoSuccess, function() , { maximumAge: 30000 });
+ watchRef.current = navigator.geolocation.watchPosition(handleGeoSuccess, function() {}, { maximumAge: 30000 });
  }
 
  function simulateLocation(hallId) {
@@ -839,13 +839,13 @@ export default function App() {
  for (var hid in menu) { var f = menu[hid].find(function(i) { return i.id === itemId; }); if (f) { itemName = f.name; itemEmoji = f.emoji; break; } }
 
  setMenu(function(prev) {
- var updated = ;
+ var updated = {};
  for (var h in prev) {
  updated[h] = prev[h].map(function(item) {
  if (item.id !== itemId) return item;
- var newTags = Object.assign(, item.tags);
+ var newTags = Object.assign({}, item.tags);
  tags.forEach(function(t) { newTags[t] = (newTags[t] || 0) + 1; });
- return Object.assign(, item, {
+ return Object.assign({}, item, {
  upvotes: vote === "up" ? item.upvotes + 1 : item.upvotes,
  downvotes: vote === "down" ? item.downvotes + 1 : item.downvotes,
  tags: newTags,
@@ -867,10 +867,10 @@ export default function App() {
 
  function handleHelpful(reviewId) {
  setMenu(function(prev) {
- var updated = ;
+ var updated = {};
  for (var h in prev) {
  updated[h] = prev[h].map(function(item) {
- return Object.assign(, item, { reviews: (item.reviews || []).map(function(r) { return r.id === reviewId ? Object.assign(, r, { helpful: r.helpful + 1 }) : r; }) });
+ return Object.assign({}, item, { reviews: (item.reviews || []).map(function(r) { return r.id === reviewId ? Object.assign({}, r, { helpful: r.helpful + 1 }) : r; }) });
  });
  }
  return updated;
