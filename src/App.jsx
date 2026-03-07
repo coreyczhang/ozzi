@@ -386,7 +386,7 @@ function AnalyticsDashboard({ menu }) {
  const totalRatings = allItems.reduce(function(s, i) { return s + i.upvotes + i.downvotes; }, 0);
  const totalReviews = allItems.reduce(function(s, i) { return s + (i.reviews ? i.reviews.filter(function(r) { return r.text; }).length : 0); }, 0);
  const topItems = allItems.slice().sort(function(a, b) { return b.upvotes - a.upvotes; }).slice(0, 5);
- const tagTotals = ;
+ const tagTotals = {};
  allItems.forEach(function(item) { Object.entries(item.tags).forEach(function(e) { tagTotals[e[0]] = (tagTotals[e[0]] || 0) + e[1]; }); });
  const topTags = Object.entries(tagTotals).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 6);
  const hallStats = DINING_HALLS.map(function(h) {
