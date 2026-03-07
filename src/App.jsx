@@ -124,7 +124,7 @@ function ReviewCard({ review, onHelpful }) {
  <div style={{ flex: 1 }}>
  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
  <span style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>@{review.user}</span>
- <span style={{ fontSize: 15 }}>{isPos ? "^" : "v"}</span></div>
+ <span style={{ fontSize: 15 }}>{isPos ? "👍" : "👎"}</span></div>
  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", marginTop: 1 }}>{review.time}</div></div></div>
  {review.tags && review.tags.length > 0 && (
  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
@@ -161,7 +161,7 @@ function ReviewRow({ review, onHelpful }) {
  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
  {/* Vote badge */}
  <div style={{ width: 28, height: 28, borderRadius: 8, background: col + "18", border: "1px solid " + col + "30", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, flexShrink: 0, marginTop: 1 }}>
- {isPos ? "^" : "v"}
+ {isPos ? "👍" : "👎"}
  </div>
  <div style={{ flex: 1, minWidth: 0 }}>
  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
@@ -452,7 +452,7 @@ function AnalyticsDashboard({ menu }) {
  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
  <span style={{ fontSize: 15 }}>{r.itemEmoji}</span>
  <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{r.itemName}</span>
- <span style={{ fontSize: 14 }}>{r.vote === "up" ? "^" : "v"}</span></div>
+ <span style={{ fontSize: 14 }}>{r.vote === "up" ? "👍" : "👎"}</span></div>
  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", margin: "0 0 4px", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", fontStyle: "italic" }}>"{r.text}"</p>
  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>@{r.user} · {r.time}</div></div>
  );
@@ -872,6 +872,26 @@ export default function App() {
  });
  }
 
+  // ── AUTH GATE ──
+  if (screen === "login") {
+    return (
+      <PhoneFrame>
+        <div style={{ fontFamily: "Inter, sans-serif", width: "100%", minHeight: "100vh", background: "#0a0a14", color: "#fff", display: "flex", flexDirection: "column", justifyContent: "center" }}>
+          <LoginScreen onLogin={function(user) { setAuthUser(user); if (user.role === "admin") { setScreen("app"); setTab("analytics"); } else { setScreen("onboard"); } }} />
+        </div>
+      </PhoneFrame>
+    );
+  }
+  if (screen === "onboard") {
+    return (
+      <PhoneFrame>
+        <div style={{ fontFamily: "Inter, sans-serif", width: "100%", minHeight: "100vh", background: "#0a0a14", color: "#fff" }}>
+          <OnboardingScreen user={authUser} onComplete={function(p) { setPrefs(p); setSelectedHall(p.homeDiningHalls[0] || "allison"); setScreen("app"); }} />
+        </div>
+      </PhoneFrame>
+    );
+  }
+
  var hallItems = menu[selectedHall] || [];
  var sorted = hallItems.slice().sort(function(a, b) {
  if (sortBy === "top") return b.upvotes - a.upvotes;
@@ -919,6 +939,11 @@ export default function App() {
  <div style={{ width: 34, height: 34, borderRadius: 11, background: "linear-gradient(135deg, #4ECB71, #4A9EFF)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}></div>
  <div>
  <div style={{ fontWeight: 900, fontSize: 20, letterSpacing: "-0.5px", lineHeight: 1 }}>Ozzi</div>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          {authUser && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", fontWeight: 600 }}>{authUser.name}</span>}
+          <button onClick={function() { setScreen("login"); setAuthUser(null); setPrefs(null); setTab("feed"); }} style={{ padding: "4px 10px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)", background: "transparent", color: "rgba(255,255,255,0.3)", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>Out</button>
+        <div style={{ display: "none" }}
  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 600, letterSpacing: 0.5 }}>NORTHWESTERN · DINING</div></div></div>
  {geoState === "requesting" && <div style={{ width: 8, height: 8, borderRadius: 99, background: "#FFD60A", animation: "pulse 1s infinite" }} />}
  {geoState === "granted" && nearbyHall && (
@@ -928,7 +953,7 @@ export default function App() {
  )}
  </div>
  <div style={{ display: "flex" }}>
- {[["feed", "Menu"], ["activity", "Live"], ["analytics", "Insights"]].map(function(item) {
+ {(authUser && authUser.role === "admin" ? [["analytics", "Insights"]] : [["feed", "Menu"], ["activity", "Live"], ["analytics", "Insights"]]).map(function(item) {
  return (
  <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ flex: 1, padding: "10px 0", border: "none", background: "none", cursor: "pointer", fontSize: 12, fontWeight: tab === item[0] ? 800 : 600, color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", borderBottom: "2px solid " + (tab === item[0] ? "#4ECB71" : "transparent"), transition: "all 0.2s", fontFamily: "Inter, sans-serif" }}>
  {item[1]}
@@ -1000,7 +1025,7 @@ export default function App() {
  return (
  <div key={evt.id} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 16, padding: "12px 14px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.07)", display: "flex", gap: 12, alignItems: "flex-start", animation: "fadeUp 0.3s ease " + Math.min(i, 5) * 0.07 + "s both" }}>
  <div style={{ width: 38, height: 38, borderRadius: 12, background: evt.vote === "up" ? "rgba(78,203,113,0.15)" : "rgba(255,107,107,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>
- {evt.vote === "up" ? "^" : "v"}
+ {evt.vote === "up" ? "👍" : "👎"}
  </div>
  <div style={{ flex: 1 }}>
  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>
@@ -1029,7 +1054,7 @@ export default function App() {
  </div>
 
  <div style={{ position: "sticky", bottom: 0, width: "100%", background: "rgba(10,10,20,0.96)", backdropFilter: "blur(16px)", borderTop: "1px solid rgba(255,255,255,0.07)", padding: "10px 20px 24px", display: "flex", justifyContent: "space-around", zIndex: 50 }}>
- {[["feed", "Menu"], ["activity", "Live"], ["analytics", "Insights"]].map(function(item) {
+ {(authUser && authUser.role === "admin" ? [["analytics", "Insights"]] : [["feed", "Menu"], ["activity", "Live"], ["analytics", "Insights"]]).map(function(item) {
  return (
  <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 3, background: "none", border: "none", cursor: "pointer", color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", fontFamily: "Inter, sans-serif", transition: "color 0.2s" }}>
  <span style={{ fontSize: 22 }}>{item[1]}</span>
