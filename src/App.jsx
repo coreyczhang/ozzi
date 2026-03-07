@@ -939,12 +939,11 @@ export default function App() {
  <div style={{ width: 34, height: 34, borderRadius: 11, background: "linear-gradient(135deg, #4ECB71, #4A9EFF)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}></div>
  <div>
  <div style={{ fontWeight: 900, fontSize: 20, letterSpacing: "-0.5px", lineHeight: 1 }}>Ozzi</div>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {authUser && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", fontWeight: 600 }}>{authUser.name}</span>}
-          <button onClick={function() { setScreen("login"); setAuthUser(null); setPrefs(null); setTab("feed"); }} style={{ padding: "4px 10px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)", background: "transparent", color: "rgba(255,255,255,0.3)", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>Out</button>
-        <div style={{ display: "none" }}
- <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 600, letterSpacing: 0.5 }}>NORTHWESTERN · DINING</div></div></div>
+ <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 600, letterSpacing: 0.5 }}>NORTHWESTERN · DINING</div></div>
+ <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
+   {authUser && <span style={{ fontSize: 11, color: "rgba(255,255,255,0.35)", fontWeight: 600 }}>{authUser.name}</span>}
+   <button onClick={function() { setScreen("login"); setAuthUser(null); setPrefs(null); setTab("feed"); }} style={{ padding: "4px 10px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)", background: "transparent", color: "rgba(255,255,255,0.3)", fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>Sign out</button>
+ </div></div>
  {geoState === "requesting" && <div style={{ width: 8, height: 8, borderRadius: 99, background: "#FFD60A", animation: "pulse 1s infinite" }} />}
  {geoState === "granted" && nearbyHall && (
  <div style={{ display: "flex", alignItems: "center", gap: 5, background: "rgba(78,203,113,0.08)", border: "1px solid rgba(78,203,113,0.22)", borderRadius: 99, padding: "4px 10px" }}>
