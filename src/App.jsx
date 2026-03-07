@@ -124,7 +124,7 @@ function ReviewCard({ review, onHelpful }) {
  <div style={{ flex: 1 }}>
  <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
  <span style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>@{review.user}</span>
- <span style={{ fontSize: 15 }}>{isPos ? "↑" : "↓"}</span></div>
+ <span style={{ fontSize: 15 }}>{isPos ? "👍" : "👎"}</span></div>
  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", marginTop: 1 }}>{review.time}</div></div></div>
  {review.tags && review.tags.length > 0 && (
  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 10 }}>
@@ -161,7 +161,7 @@ function ReviewRow({ review, onHelpful }) {
  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
  {/* Vote badge */}
  <div style={{ width: 28, height: 28, borderRadius: 8, background: col + "18", border: "1px solid " + col + "30", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, flexShrink: 0, marginTop: 1 }}>
- {isPos ? "↑" : "↓"}
+ {isPos ? "👍" : "👎"}
  </div>
  <div style={{ flex: 1, minWidth: 0 }}>
  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4, flexWrap: "wrap" }}>
@@ -267,7 +267,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
  {/* Vote confirmed badge */}
  {myVote && !submitted && (
  <span style={{ fontSize: 11, color: myVote === "up" ? "#4ECB71" : "#FF6B6B", fontWeight: 700 }}>
- {myVote === "up" ? "↑ Voted" : "↓ Voted"}
+ {myVote === "up" ? "👍 Voted" : "👎 Voted"}
  </span>
  )}
  {submitted && <span style={{ fontSize: 11, color: "#4ECB71", fontWeight: 700 }}> Review posted!</span>}
@@ -315,7 +315,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
  <div style={{ marginBottom: 10 }}>
  <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.25)", letterSpacing: 0.5, marginBottom: 6 }}>YOUR VOTE</div>
  <div style={{ display: "flex", gap: 6 }}>
- {[["up","↑ Love it","#4ECB71"],["down","↓ Not great","#FF6B6B"]].map(function(arr) {
+ {[["up","👍 Love it","#4ECB71"],["down","👎 Not great","#FF6B6B"]].map(function(arr) {
  const v=arr[0],label=arr[1],col=arr[2];
  const sel = myVote === v;
  return (
@@ -386,7 +386,7 @@ function AnalyticsDashboard({ menu }) {
  const totalRatings = allItems.reduce(function(s, i) { return s + i.upvotes + i.downvotes; }, 0);
  const totalReviews = allItems.reduce(function(s, i) { return s + (i.reviews ? i.reviews.filter(function(r) { return r.text; }).length : 0); }, 0);
  const topItems = allItems.slice().sort(function(a, b) { return b.upvotes - a.upvotes; }).slice(0, 5);
- const tagTotals = {};
+ const tagTotals = ;
  allItems.forEach(function(item) { Object.entries(item.tags).forEach(function(e) { tagTotals[e[0]] = (tagTotals[e[0]] || 0) + e[1]; }); });
  const topTags = Object.entries(tagTotals).sort(function(a, b) { return b[1] - a[1]; }).slice(0, 6);
  const hallStats = DINING_HALLS.map(function(h) {
@@ -457,7 +457,7 @@ function AnalyticsDashboard({ menu }) {
  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
  <span style={{ fontSize: 15 }}>{r.itemEmoji}</span>
  <span style={{ fontSize: 13, fontWeight: 700, color: "#fff" }}>{r.itemName}</span>
- <span style={{ fontSize: 14 }}>{r.vote === "up" ? "↑" : "↓"}</span></div>
+ <span style={{ fontSize: 14 }}>{r.vote === "up" ? "👍" : "👎"}</span></div>
  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.45)", margin: "0 0 4px", lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", fontStyle: "italic" }}>"{r.text}"</p>
  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)" }}>@{r.user} · {r.time}</div></div>
  );
@@ -862,7 +862,7 @@ export default function App() {
  setActivity(function(prev) {
  return [{ id: "act_" + Date.now(), user: "you", avatar: "Y", item: itemName, hall: hallName, vote: vote, tag: tags[0] || null, review: reviewText.trim() || null, time: "just now" }].concat(prev);
  });
- showToast(hasReview ? " Review posted!" : vote === "up" ? " Upvoted!" : " Feedback noted!");
+ showToast(hasReview ? "📝 Review posted!" : vote === "up" ? "👍 Upvoted!" : "👎 Feedback noted!");
  }
 
  function handleHelpful(reviewId) {
@@ -921,7 +921,7 @@ export default function App() {
  <div style={{ background: "rgba(10,10,20,0.97)", backdropFilter: "blur(16px)", padding: "16px 18px 0", borderBottom: "1px solid rgba(255,255,255,0.07)", position: "sticky", top: 0, zIndex: 50 }}>
  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
- <div style={{ width: 34, height: 34, borderRadius: 11, background: "linear-gradient(135deg, #4ECB71, #4A9EFF)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}></div>
+ <div style={{ width: 34, height: 34, borderRadius: 11, background: "linear-gradient(135deg, #4ECB71, #4A9EFF)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 17 }}>🍱</div>
  <div>
  <div style={{ fontWeight: 900, fontSize: 20, letterSpacing: "-0.5px", lineHeight: 1 }}>Ozzi</div>
  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.3)", fontWeight: 600, letterSpacing: 0.5 }}>NORTHWESTERN · DINING</div></div></div>
@@ -933,7 +933,7 @@ export default function App() {
  )}
  </div>
  <div style={{ display: "flex" }}>
- {[["feed", " Menu"], ["activity", " Live"], ["analytics", " Insights"]].map(function(item) {
+ {[["feed", "🍽️ Menu"], ["activity", "⚡ Live"], ["analytics", "📊 Insights"]].map(function(item) {
  return (
  <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ flex: 1, padding: "10px 0", border: "none", background: "none", cursor: "pointer", fontSize: 12, fontWeight: tab === item[0] ? 800 : 600, color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", borderBottom: "2px solid " + (tab === item[0] ? "#4ECB71" : "transparent"), transition: "all 0.2s", fontFamily: "Inter, sans-serif" }}>
  {item[1]}
@@ -949,7 +949,7 @@ export default function App() {
  onClick={requestGeo}
  style={{ width: "100%", padding: "10px 14px", background: geoState === "granted" ? "rgba(78,203,113,0.07)" : "rgba(255,255,255,0.03)", border: "1px solid " + (geoState === "granted" ? "rgba(78,203,113,0.22)" : "rgba(255,255,255,0.07)"), borderRadius: 12, cursor: "pointer", display: "flex", alignItems: "center", gap: 8, marginBottom: 14, fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}
  >
- <span style={{ fontSize: 14 }}>{geoState === "granted" ? "" : geoState === "denied" ? "↑" : "↓"}</span>
+ <span style={{ fontSize: 14 }}>{geoState === "granted" ? "📍" : geoState === "denied" ? "🚫" : "🔍"}</span>
  <span style={{ fontSize: 12, fontWeight: 600, color: geoState === "granted" ? "#4ECB71" : "rgba(255,255,255,0.38)", flex: 1, textAlign: "left" }}>
  {geoState === "granted" && nearbyHall ? "Near " + nearbyHall.name + " (" + nearbyHall.distance + "m)" : geoState === "granted" ? "Location active · Browse from anywhere" : geoState === "denied" ? "Location denied · Tap to retry" : "Enable location for live menu suggestions"}
  </span>
@@ -961,7 +961,7 @@ export default function App() {
  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", fontWeight: 700, letterSpacing: 1, textTransform: "uppercase", marginBottom: 8 }}>Demo: simulate location</div>
  <div style={{ display: "flex", gap: 8, overflowX: "auto" }}>
  {DINING_HALLS.slice(0, 3).map(function(h) {
- return <button key={h.id} onClick={function() { simulateLocation(h.id); }} style={{ flexShrink: 0, padding: "6px 12px", borderRadius: 99, border: "1px solid " + h.color + "40", background: h.color + "15", color: h.color, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}> {h.name}</button>;
+ return <button key={h.id} onClick={function() { simulateLocation(h.id); }} style={{ flexShrink: 0, padding: "6px 12px", borderRadius: 99, border: "1px solid " + h.color + "40", background: h.color + "15", color: h.color, fontSize: 11, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>📍 {h.name}</button>;
  })}
  </div></div>
  )}
@@ -1005,7 +1005,7 @@ export default function App() {
  return (
  <div key={evt.id} style={{ background: "rgba(255,255,255,0.04)", borderRadius: 16, padding: "12px 14px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.07)", display: "flex", gap: 12, alignItems: "flex-start", animation: "fadeUp 0.3s ease " + Math.min(i, 5) * 0.07 + "s both" }}>
  <div style={{ width: 38, height: 38, borderRadius: 12, background: evt.vote === "up" ? "rgba(78,203,113,0.15)" : "rgba(255,107,107,0.15)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>
- {evt.vote === "up" ? "↑" : "↓"}
+ {evt.vote === "up" ? "👍" : "👎"}
  </div>
  <div style={{ flex: 1 }}>
  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.5 }}>
