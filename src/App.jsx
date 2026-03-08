@@ -376,7 +376,7 @@ function GeoPromptBanner({ hall, onAccept, onDismiss }) {
  );
 }
 
-function AnalyticsDashboard({ menu }) {
+function AnalyticsDashboard({ menu, authUser }) {
  const allItems = Object.entries(menu).flatMap(function(entry) { return entry[1].map(function(i) { return Object.assign({}, i, { hallId: entry[0] }); }); });
  const totalRatings = allItems.reduce(function(s, i) { return s + i.upvotes + i.downvotes; }, 0);
  const totalReviews = allItems.reduce(function(s, i) { return s + (i.reviews ? i.reviews.filter(function(r) { return r.text; }).length : 0); }, 0);
@@ -471,6 +471,212 @@ function AnalyticsDashboard({ menu }) {
  <div style={{ fontSize: 12, fontWeight: 700, color: "#4ECB71", letterSpacing: 0.5, marginBottom: 8, textTransform: "uppercase" }}> Waste Reduction Insight</div>
  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>Items tagged <strong style={{ color: "#fff" }}>"Bland"</strong> have written reviews confirming flavor issues — students say Vegan Burger <em style={{ color: "rgba(255,255,255,0.8)" }}>"needs serious seasoning."</em> Recommend recipe adjustment before next service. Chocolate Lava Cake (98% approval) should be replicated at lower-rated halls.</div></div></div>
  );
+}
+
+
+// ── AI ANALYTICS PANEL ───────────────────────────────────────────────────────
+function AIAnalyticsPanel({ menu }) {
+  const [aiOutput, setAiOutput] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  function buildPrompt() {
+    var allItems = Object.entries(menu).flatMap(function(entry) {
+      return entry[1].map(function(i) { return Object.assign({}, i, { hall: entry[0] }); });
+    });
+    var summary = allItems.map(function(i) {
+      var total = i.upvotes + i.downvotes;
+      var pct = total === 0 ? 50 : Math.round((i.upvotes / total) * 100);
+      var topTags = Object.entries(i.tags).sort(function(a,b){return b[1]-a[1];}).slice(0,3).map(function(e){return e[0];}).join(", ");
+      var reviews = (i.reviews||[]).filter(function(r){return r.text;}).map(function(r){return r.text;}).join(" | ");
+      return i.name + " (" + i.hall + "): " + pct + "% approval, tags: " + topTags + (reviews ? ", reviews: " + reviews : "");
+    }).join("\n");
+
+    return "You are a food service analytics AI for Northwestern University dining halls. Analyze the following menu item ratings and student feedback, then provide:\n1. Top 3 most popular ingredients or flavor profiles students love\n2. Top 2 cuisine types students want more of\n3. Three specific, feasible new menu item recommendations with a one-sentence rationale each\n4. One item to remove or fix with a brief reason\n\nKeep your entire response under 280 words. Be specific and data-driven. Format with clear numbered sections.\n\nMenu data:\n" + summary;
+  }
+
+  async function runAnalysis() {
+    setLoading(true);
+    setError(null);
+    setAiOutput(null);
+    try {
+      var res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 600,
+          messages: [{ role: "user", content: buildPrompt() }]
+        })
+      });
+      var data = await res.json();
+      if (data.content && data.content[0]) {
+        setAiOutput(data.content[0].text);
+      } else {
+        setError("No response from AI.");
+      }
+    } catch(e) {
+      setError("Failed to reach AI. Check connection.");
+    }
+    setLoading(false);
+  }
+
+  return (
+    <div style={{ margin: "14px 0 0", background: "linear-gradient(135deg, rgba(74,158,255,0.08), rgba(191,90,242,0.08))", borderRadius: 20, padding: "18px", border: "1px solid rgba(74,158,255,0.2)" }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+        <div>
+          <div style={{ fontSize: 12, fontWeight: 700, color: "#4A9EFF", letterSpacing: 0.5, textTransform: "uppercase", marginBottom: 2 }}>✦ AI Menu Intelligence</div>
+          <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)" }}>Powered by Claude · Analyzes live ratings</div>
+        </div>
+        <button
+          onClick={runAnalysis}
+          disabled={loading}
+          style={{ padding: "8px 16px", borderRadius: 10, border: "none", background: loading ? "rgba(255,255,255,0.08)" : "linear-gradient(135deg, #4A9EFF, #BF5AF2)", color: loading ? "rgba(255,255,255,0.3)" : "#fff", fontWeight: 800, fontSize: 12, cursor: loading ? "not-allowed" : "pointer", fontFamily: "Inter, sans-serif", whiteSpace: "nowrap" }}
+        >
+          {loading ? "Analyzing..." : aiOutput ? "Re-analyze" : "Run Analysis"}
+        </button>
+      </div>
+
+      {!aiOutput && !loading && !error && (
+        <div style={{ padding: "20px 0", textAlign: "center", color: "rgba(255,255,255,0.2)", fontSize: 13 }}>
+          Click Run Analysis to get AI-powered menu recommendations based on current ratings and student feedback.
+        </div>
+      )}
+
+      {loading && (
+        <div style={{ padding: "20px 0", textAlign: "center" }}>
+          <div style={{ fontSize: 13, color: "#4A9EFF", fontWeight: 600, marginBottom: 6 }}>Analyzing {Object.values(menu).flat().length} menu items...</div>
+          <div style={{ fontSize: 12, color: "rgba(255,255,255,0.25)" }}>Reading ratings, tags, and reviews</div>
+        </div>
+      )}
+
+      {error && (
+        <div style={{ fontSize: 13, color: "#FF6B6B", padding: "8px 0" }}>{error}</div>
+      )}
+
+      {aiOutput && (
+        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.75)", lineHeight: 1.75, whiteSpace: "pre-wrap" }}>
+          {aiOutput}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+// ── SUGGESTION TAB ────────────────────────────────────────────────────────────
+function SuggestionTab({ authUser, onSubmitted }) {
+  const [category, setCategory] = useState("cuisine");
+  const [text, setText] = useState("");
+  const [hall, setHall] = useState("any");
+  const [submitted, setSubmitted] = useState(false);
+  const [submissions, setSubmissions] = useState([
+    { id: "s1", user: "wildcat_2027", category: "dish", hall: "Allison", text: "Please bring back the bulgogi rice bowl — it was 🔥 last semester!", time: "1h ago" },
+    { id: "s2", user: "nugrad_cs", category: "cuisine", hall: "any", text: "Would love to see more Vietnamese options — pho, banh mi, anything!", time: "3h ago" },
+    { id: "s3", user: "dillo_fan", category: "diet", hall: "Sargent", text: "More high-protein options that aren't just plain chicken breast please", time: "5h ago" },
+  ]);
+
+  function submit() {
+    if (!text.trim()) return;
+    var newSub = { id: "s" + Date.now(), user: authUser ? authUser.name : "you", category: category, hall: hall, text: text.trim(), time: "just now" };
+    setSubmissions(function(p) { return [newSub, ...p]; });
+    setText("");
+    setSubmitted(true);
+    setTimeout(function() { setSubmitted(false); }, 2500);
+    if (onSubmitted) onSubmitted(newSub);
+  }
+
+  var cats = [["cuisine", "🌍", "Cuisine type"], ["dish", "🍽️", "Specific dish"], ["diet", "🥗", "Dietary need"], ["other", "💬", "Other"]];
+  var halls = ["any", ...DINING_HALLS.map(function(h) { return h.name; })];
+
+  return (
+    <div style={{ padding: "16px 16px 120px" }}>
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ fontWeight: 900, fontSize: 20, color: "#fff", marginBottom: 4 }}>Suggest to Dining</div>
+        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.35)" }}>Your suggestions go directly to Levi dining staff.</div>
+      </div>
+
+      {/* Category selector */}
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1, marginBottom: 8 }}>SUGGESTION TYPE</div>
+        <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+          {cats.map(function(c) {
+            var sel = category === c[0];
+            return (
+              <button key={c[0]} onClick={function() { setCategory(c[0]); }}
+                style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 14px", borderRadius: 99, border: "1.5px solid " + (sel ? "#4ECB71" : "rgba(255,255,255,0.1)"), background: sel ? "rgba(78,203,113,0.12)" : "transparent", color: sel ? "#4ECB71" : "rgba(255,255,255,0.45)", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}>
+                <span>{c[1]}</span><span>{c[2]}</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Hall selector */}
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1, marginBottom: 8 }}>FOR WHICH HALL?</div>
+        <div style={{ display: "flex", gap: 8, overflowX: "auto", paddingBottom: 4 }}>
+          {halls.map(function(h) {
+            var sel = hall === h;
+            var hallObj = DINING_HALLS.find(function(x) { return x.name === h; });
+            var col = hallObj ? hallObj.color : "#4ECB71";
+            return (
+              <button key={h} onClick={function() { setHall(h); }}
+                style={{ flexShrink: 0, padding: "7px 14px", borderRadius: 99, border: "1.5px solid " + (sel ? col : "rgba(255,255,255,0.1)"), background: sel ? col + "18" : "transparent", color: sel ? col : "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}>
+                {h === "any" ? "Any hall" : h}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Text input */}
+      <div style={{ marginBottom: 14 }}>
+        <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1, marginBottom: 8 }}>YOUR SUGGESTION</div>
+        <textarea
+          value={text}
+          onChange={function(e) { setText(e.target.value); }}
+          placeholder={
+            category === "cuisine" ? "e.g. More Korean food, Ethiopian injera, Vietnamese pho..." :
+            category === "dish" ? "e.g. Bring back the bulgogi bowl, add shakshuka to breakfast..." :
+            category === "diet" ? "e.g. More high-protein vegan options, gluten-free pasta..." :
+            "Any feedback for dining staff..."
+          }
+          maxLength={300}
+          rows={4}
+          style={{ width: "100%", padding: "12px 14px", background: "rgba(255,255,255,0.05)", border: "1.5px solid rgba(255,255,255,0.1)", borderRadius: 14, color: "#fff", fontSize: 13, fontFamily: "Inter, sans-serif", resize: "none", outline: "none", lineHeight: 1.6, boxSizing: "border-box", transition: "border-color 0.2s" }}
+          onFocus={function(e) { e.target.style.borderColor = "#4ECB71"; }}
+          onBlur={function(e) { e.target.style.borderColor = "rgba(255,255,255,0.1)"; }}
+        />
+        <div style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", textAlign: "right", marginTop: 4 }}>{text.length}/300</div>
+      </div>
+
+      <button
+        onClick={submit}
+        disabled={!text.trim()}
+        style={{ width: "100%", padding: "13px 0", borderRadius: 12, border: "none", background: text.trim() ? "linear-gradient(135deg, #4ECB71, #1fa84a)" : "rgba(255,255,255,0.07)", color: text.trim() ? "#fff" : "rgba(255,255,255,0.2)", fontWeight: 800, fontSize: 14, cursor: text.trim() ? "pointer" : "not-allowed", fontFamily: "Inter, sans-serif", transition: "all 0.2s", marginBottom: 24 }}
+      >
+        {submitted ? "✓ Sent to dining staff!" : "Send Suggestion"}
+      </button>
+
+      {/* Recent submissions */}
+      <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1, marginBottom: 12 }}>RECENT FROM WILDCATS</div>
+      {submissions.map(function(s) {
+        var catLabel = { cuisine: "🌍 Cuisine", dish: "🍽️ Dish", diet: "🥗 Diet", other: "💬 Other" }[s.category] || s.category;
+        return (
+          <div key={s.id} style={{ background: "rgba(255,255,255,0.03)", borderRadius: 14, padding: "12px 14px", marginBottom: 10, border: "1px solid rgba(255,255,255,0.06)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+              <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 99, background: "rgba(78,203,113,0.1)", color: "#4ECB71", fontWeight: 700 }}>{catLabel}</span>
+              {s.hall !== "any" && <span style={{ fontSize: 11, padding: "2px 8px", borderRadius: 99, background: "rgba(74,158,255,0.1)", color: "#4A9EFF", fontWeight: 700 }}>{s.hall}</span>}
+              <span style={{ fontSize: 10, color: "rgba(255,255,255,0.2)", marginLeft: "auto" }}>{s.time}</span>
+            </div>
+            <p style={{ fontSize: 13, color: "rgba(255,255,255,0.65)", margin: 0, lineHeight: 1.55 }}>{s.text}</p>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.2)", marginTop: 6 }}>@{s.user}</div>
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 function PhoneFrame({ children }) {
@@ -575,6 +781,7 @@ function OnboardingScreen({ user, onComplete }) {
   const [homeDiningHalls, setHomeDiningHalls] = useState([]);
   const [mealPrefs, setMealPrefs] = useState([]);
   const [notifPref, setNotifPref] = useState(null); // "exit" | "meal" | "both" | "none"
+  const [mealTimes, setMealTimes] = useState({}); // { Breakfast: "07:30", Lunch: "12:00", ... }
 
   function toggleHall(id) { setHomeDiningHalls(function(p) { return p.includes(id) ? p.filter(function(x) { return x !== id; }) : [...p, id]; }); }
   function toggleMeal(m) { setMealPrefs(function(p) { return p.includes(m) ? p.filter(function(x) { return x !== m; }) : [...p, m]; }); }
@@ -632,26 +839,54 @@ function OnboardingScreen({ user, onComplete }) {
       </div>
     </div>,
 
-    // STEP 2 — meal time preferences
+    // STEP 2 — meal time preferences with time picker
     <div key="meals" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <div style={{ flex: 1, padding: "0 28px", overflowY: "auto" }}>
         <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1, marginBottom: 8, paddingTop: 8 }}>STEP 2 OF 3</div>
-        <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", fontFamily: "Inter, sans-serif", marginBottom: 6 }}>When do you eat?</div>
-        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginBottom: 20 }}>We'll surface ratings for those meal times first.</div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          {MEAL_TIMES.map(function(m) {
+        <div style={{ fontSize: 20, fontWeight: 900, color: "#fff", fontFamily: "Inter, sans-serif", marginBottom: 6 }}>Your meal times</div>
+        <div style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", marginBottom: 20 }}>Toggle meals you eat and set the time you usually go. We'll send you the menu right before.</div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          {[
+            ["Breakfast", "🌅", "07:30"],
+            ["Lunch",     "☀️", "12:00"],
+            ["Dinner",    "🌆", "18:00"],
+            ["Late Night","🌙", "21:30"],
+          ].map(function(arr) {
+            var m = arr[0], icon = arr[1], defaultTime = arr[2];
             var sel = mealPrefs.includes(m);
-            var sub = { Breakfast: "7 – 10am", Lunch: "11am – 2pm", Dinner: "5 – 8pm", "Late Night": "9pm – midnight" };
+            var currentTime = mealTimes[m] || defaultTime;
             return (
-              <button key={m} onClick={function() { toggleMeal(m); }}
-                style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", borderRadius: 14, border: "1.5px solid " + (sel ? "#4ECB71" : "rgba(255,255,255,0.08)"), background: sel ? "rgba(78,203,113,0.1)" : "rgba(255,255,255,0.03)", cursor: "pointer", textAlign: "left", transition: "all 0.15s", fontFamily: "Inter, sans-serif" }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: sel ? "#4ECB71" : "rgba(255,255,255,0.15)", border: "2px solid " + (sel ? "#4ECB71" : "rgba(255,255,255,0.2)"), flexShrink: 0 }} />
-                <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 700, fontSize: 14, color: sel ? "#fff" : "rgba(255,255,255,0.7)" }}>{m}</div>
-                  <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 1 }}>{sub[m]}</div>
-                </div>
-                {sel && <div style={{ fontSize: 12, fontWeight: 800, color: "#4ECB71" }}>✓</div>}
-              </button>
+              <div key={m} style={{ borderRadius: 14, border: "1.5px solid " + (sel ? "#4ECB71" : "rgba(255,255,255,0.08)"), background: sel ? "rgba(78,203,113,0.07)" : "rgba(255,255,255,0.03)", transition: "all 0.15s", overflow: "hidden" }}>
+                <button onClick={function() { toggleMeal(m); if (!mealTimes[m]) { setMealTimes(function(p) { var n = Object.assign({}, p); n[m] = defaultTime; return n; }); } }}
+                  style={{ width: "100%", display: "flex", alignItems: "center", gap: 12, padding: "14px 16px", background: "transparent", border: "none", cursor: "pointer", textAlign: "left", fontFamily: "Inter, sans-serif" }}>
+                  <div style={{ width: 10, height: 10, borderRadius: "50%", background: sel ? "#4ECB71" : "rgba(255,255,255,0.15)", border: "2px solid " + (sel ? "#4ECB71" : "rgba(255,255,255,0.2)"), flexShrink: 0, transition: "all 0.15s" }} />
+                  <span style={{ fontSize: 18 }}>{icon}</span>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: 700, fontSize: 14, color: sel ? "#fff" : "rgba(255,255,255,0.7)" }}>{m}</div>
+                  </div>
+                  {sel && <div style={{ fontSize: 12, fontWeight: 800, color: "#4ECB71" }}>✓</div>}
+                </button>
+                {sel && (
+                  <div style={{ padding: "0 16px 14px", display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{ fontSize: 12, color: "rgba(255,255,255,0.35)", fontWeight: 600, flexShrink: 0 }}>Notify me at</span>
+                    <input
+                      type="time"
+                      value={currentTime}
+                      onChange={function(e) { var v = e.target.value; setMealTimes(function(p) { var n = Object.assign({}, p); n[m] = v; return n; }); }}
+                      style={{ flex: 1, padding: "8px 12px", background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: 10, color: "#fff", fontSize: 14, fontWeight: 700, fontFamily: "Inter, sans-serif", outline: "none", colorScheme: "dark" }}
+                    />
+                    <span style={{ fontSize: 12, color: "#4ECB71", fontWeight: 700 }}>
+                      {(function() {
+                        var h = parseInt(currentTime.split(":")[0]);
+                        var min = currentTime.split(":")[1];
+                        var ampm = h >= 12 ? "pm" : "am";
+                        var h12 = h % 12 || 12;
+                        return h12 + ":" + min + " " + ampm;
+                      })()}
+                    </span>
+                  </div>
+                )}
+              </div>
             );
           })}
         </div>
@@ -701,7 +936,7 @@ function OnboardingScreen({ user, onComplete }) {
             if ((notifPref === "exit" || notifPref === "both") && "Notification" in window && Notification.permission === "default") {
               Notification.requestPermission();
             }
-            onComplete({ homeDiningHalls: homeDiningHalls, mealPrefs: mealPrefs, notifPref: notifPref });
+            onComplete({ homeDiningHalls: homeDiningHalls, mealPrefs: mealPrefs, mealTimes: mealTimes, notifPref: notifPref });
           }}
           style={{ flex: 1, padding: "13px 0", borderRadius: 12, border: "none", background: notifPref ? "linear-gradient(135deg,#4ECB71,#1fa84a)" : "rgba(255,255,255,0.08)", color: notifPref ? "#fff" : "rgba(255,255,255,0.25)", fontWeight: 800, fontSize: 14, cursor: notifPref ? "pointer" : "not-allowed", fontFamily: "Inter, sans-serif" }}>
           Start using Ozzi →
@@ -952,7 +1187,7 @@ export default function App() {
  )}
  </div>
  <div style={{ display: "flex" }}>
- {(authUser && authUser.role === "admin" ? [["analytics", "Insights"]] : [["feed", "Menu"], ["activity", "Live"], ["analytics", "Insights"]]).map(function(item) {
+ {(authUser && authUser.role === "admin" ? [["analytics", "Insights"]] : [["feed", "Menu"], ["activity", "Live"], ["suggest", "Suggest"]]).map(function(item) {
  return (
  <button key={item[0]} onClick={function() { setTab(item[0]); }} style={{ flex: 1, padding: "10px 0", border: "none", background: "none", cursor: "pointer", fontSize: 12, fontWeight: tab === item[0] ? 800 : 600, color: tab === item[0] ? "#4ECB71" : "rgba(255,255,255,0.3)", borderBottom: "2px solid " + (tab === item[0] ? "#4ECB71" : "transparent"), transition: "all 0.2s", fontFamily: "Inter, sans-serif" }}>
  {item[1]}
@@ -1048,7 +1283,11 @@ export default function App() {
 
  {tab === "analytics" && (
  <div style={{ padding: "16px 0 0" }}>
- <AnalyticsDashboard menu={menu} /></div>
+ <AnalyticsDashboard menu={menu} authUser={authUser} /></div>
+ )}
+
+ {tab === "suggest" && (
+ <SuggestionTab authUser={authUser} onSubmitted={function(s) { showToast("Suggestion sent!"); }} />
  )}
  </div>
 
