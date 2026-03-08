@@ -310,7 +310,7 @@ function FoodCard({ item, hall, onSubmit, onHelpful, index }) {
  <div style={{ marginBottom: 10 }}>
  <div style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.25)", letterSpacing: 0.5, marginBottom: 6 }}>YOUR VOTE</div>
  <div style={{ display: "flex", gap: 6 }}>
- {[["up","^ Good","#4ECB71"],["down","v Bad","#FF6B6B"]].map(function(arr) {
+ {[["up","👍 Good","#4ECB71"],["down","👎 Bad","#FF6B6B"]].map(function(arr) {
  const v=arr[0],label=arr[1],col=arr[2];
  const sel = myVote === v;
  return (
@@ -399,7 +399,7 @@ function AnalyticsDashboard({ menu, authUser }) {
  <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1.5, textTransform: "uppercase", marginBottom: 4 }}>Levi Insights</div>
  <div style={{ fontSize: 24, fontWeight: 900, color: "#fff", fontFamily: "Inter, sans-serif" }}>Analytics Dashboard</div></div>
  <div style={{ display: "flex", gap: 10, marginBottom: 16 }}>
- {[[String(totalRatings), "Ratings", "↑ 23% this week"], [String(totalReviews), "Reviews", "With written text"], ["5", "Halls", "All tracked"]].map(function(item) {
+ {[[String(totalRatings), "Ratings", "+23% this week"], [String(totalReviews), "Reviews", "With written text"], ["5", "Halls", "All tracked"]].map(function(item) {
  return (
  <div key={item[1]} style={{ background: "rgba(255,255,255,0.05)", borderRadius: 16, padding: "14px 12px", flex: 1, border: "1px solid rgba(255,255,255,0.08)" }}>
  <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", fontFamily: "Inter, sans-serif" }}>{item[0]}</div>
