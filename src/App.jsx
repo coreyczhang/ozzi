@@ -146,7 +146,7 @@ function ReviewCard({ review, onHelpful }) {
  style={{ background: helped ? "rgba(74,158,255,0.12)" : "transparent", border: "1px solid " + (helped ? "rgba(74,158,255,0.3)" : "rgba(255,255,255,0.1)"), borderRadius: 99, padding: "5px 12px", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 5, transition: "all 0.2s", fontFamily: "Inter, sans-serif" }}
  >
  <span style={{ fontSize: 12 }}></span>
- <span style={{ fontSize: 11, fontWeight: 700, color: helped ? "#4A9EFF" : "rgba(255,255,255,0.3)" }}>Helpful · {review.helpful + (helped ? 1 : 0)}</span></button></div>
+ <span style={{ fontSize: 11, fontWeight: 700, color: helped ? "#4A9EFF" : "rgba(255,255,255,0.3)" }}>Helpful · {review.helpful}</span></button></div>
  );
 }
 
@@ -178,7 +178,7 @@ function ReviewRow({ review, onHelpful }) {
  onClick={function() { if (!helped) { setHelped(true); onHelpful(review.id); } }}
  style={{ background: "none", border: "none", cursor: helped ? "default" : "pointer", display: "flex", alignItems: "center", gap: 4, padding: 0, fontFamily: "Inter, sans-serif" }}
  >
- <span style={{ fontSize: 11, color: helped ? "#4A9EFF" : "rgba(255,255,255,0.2)", fontWeight: 700 }}>Helpful · {review.helpful + (helped ? 1 : 0)}</span></button></div></div></div>
+ <span style={{ fontSize: 11, color: helped ? "#4A9EFF" : "rgba(255,255,255,0.2)", fontWeight: 700 }}>Helpful · {review.helpful}</span></button></div></div></div>
  );
 }
 
@@ -443,6 +443,13 @@ function AnalyticsDashboard({ menu, authUser }) {
  );
  })}
  </div>
+ {authUser && authUser.role === "admin" && (
+ <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
+   <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 4, fontFamily: "Inter, sans-serif" }}>Menu Reviews by Hall</div>
+   <div style={{ fontSize: 12, color: "rgba(255,255,255,0.3)", marginBottom: 2 }}>Top 5 & bottom 5 per dining hall · expand to read reviews</div>
+   <AdminReviewBrowser menu={menu} />
+ </div>
+ )}
  {recentReviews.length > 0 && (
  <div style={{ background: "rgba(255,255,255,0.04)", borderRadius: 20, padding: "18px", marginBottom: 14, border: "1px solid rgba(255,255,255,0.08)" }}>
  <div style={{ fontWeight: 800, fontSize: 14, color: "#fff", marginBottom: 14, fontFamily: "Inter, sans-serif" }}> Latest Student Reviews</div>
@@ -471,6 +478,136 @@ function AnalyticsDashboard({ menu, authUser }) {
  <div style={{ fontSize: 12, fontWeight: 700, color: "#4ECB71", letterSpacing: 0.5, marginBottom: 8, textTransform: "uppercase" }}> Waste Reduction Insight</div>
  <div style={{ fontSize: 13, color: "rgba(255,255,255,0.6)", lineHeight: 1.7 }}>Items tagged <strong style={{ color: "#fff" }}>"Bland"</strong> have written reviews confirming flavor issues — students say Vegan Burger <em style={{ color: "rgba(255,255,255,0.8)" }}>"needs serious seasoning."</em> Recommend recipe adjustment before next service. Chocolate Lava Cake (98% approval) should be replicated at lower-rated halls.</div></div></div>
  );
+}
+
+
+// ── ADMIN REVIEW BROWSER ─────────────────────────────────────────────────────
+function AdminReviewBrowser({ menu }) {
+  const [selectedHall, setSelectedHall] = useState(DINING_HALLS[0].id);
+  const [showAll, setShowAll] = useState(false);
+  const [expandedItems, setExpandedItems] = useState({});
+
+  function toggleExpand(id) {
+    setExpandedItems(function(p) {
+      var n = Object.assign({}, p);
+      n[id] = !n[id];
+      return n;
+    });
+  }
+
+  var hallItems = (menu[selectedHall] || []).map(function(item) {
+    var total = item.upvotes + item.downvotes;
+    var pct = total === 0 ? 50 : Math.round((item.upvotes / total) * 100);
+    return Object.assign({}, item, { pct: pct, reviewCount: (item.reviews || []).filter(function(r) { return r.text; }).length });
+  }).sort(function(a, b) { return b.pct - a.pct; });
+
+  var top5 = hallItems.slice(0, 5);
+  var bottom5 = hallItems.slice().reverse().slice(0, 5).reverse();
+  var allShown = showAll ? hallItems : null;
+  var hallObj = DINING_HALLS.find(function(h) { return h.id === selectedHall; });
+
+  function ItemRow({ item, rank, rankType }) {
+    var expanded = expandedItems[item.id];
+    var pctColor = item.pct >= 80 ? "#4ECB71" : item.pct >= 55 ? "#FFD60A" : "#FF6B6B";
+    var reviews = (item.reviews || []).filter(function(r) { return r.text; });
+    return (
+      <div style={{ marginBottom: 8 }}>
+        <button
+          onClick={function() { toggleExpand(item.id); }}
+          style={{ width: "100%", display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", background: expanded ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.03)", border: "1px solid " + (expanded ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.06)"), borderRadius: expanded ? "12px 12px 0 0" : 12, cursor: "pointer", fontFamily: "Inter, sans-serif", textAlign: "left", transition: "all 0.15s" }}
+        >
+          {rank && (
+            <span style={{ fontSize: 11, fontWeight: 900, color: rankType === "top" ? "#4ECB71" : "#FF6B6B", minWidth: 20 }}>
+              {rankType === "top" ? "#" + rank : "#" + rank}
+            </span>
+          )}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#fff", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{item.name}</div>
+            <div style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", marginTop: 1 }}>{item.station} · {item.upvotes + item.downvotes} votes · {reviews.length} reviews</div>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+            <span style={{ fontSize: 13, fontWeight: 900, color: pctColor, fontFamily: "Inter, sans-serif" }}>{item.pct}%</span>
+            <span style={{ fontSize: 11, color: "rgba(255,255,255,0.25)", transition: "transform 0.2s", display: "inline-block", transform: expanded ? "rotate(180deg)" : "rotate(0deg)" }}>▾</span>
+          </div>
+        </button>
+        {expanded && (
+          <div style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.06)", borderTop: "none", borderRadius: "0 0 12px 12px", padding: "10px 14px" }}>
+            {reviews.length === 0 ? (
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.2)", padding: "8px 0", fontStyle: "italic" }}>No written reviews yet.</div>
+            ) : reviews.map(function(r) {
+              var isPos = r.vote === "up";
+              var col = isPos ? "#4ECB71" : "#FF6B6B";
+              return (
+                <div key={r.id} style={{ paddingBottom: 10, marginBottom: 10, borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
+                    <div style={{ width: 24, height: 24, borderRadius: 7, background: col + "20", border: "1px solid " + col + "40", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 13, flexShrink: 0 }}>
+                      {isPos ? "👍" : "👎"}
+                    </div>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "rgba(255,255,255,0.6)" }}>@{r.user}</span>
+                    {r.tags && r.tags.slice(0,2).map(function(t) {
+                      var ip = POS_TAGS.includes(t);
+                      return <span key={t} style={{ fontSize: 10, padding: "1px 7px", borderRadius: 99, background: ip ? "rgba(78,203,113,0.12)" : "rgba(255,107,107,0.12)", color: ip ? "#4ECB71" : "#FF6B6B", fontWeight: 700 }}>{t}</span>;
+                    })}
+                    <span style={{ fontSize: 10, color: "rgba(255,255,255,0.18)", marginLeft: "auto" }}>{r.time}</span>
+                  </div>
+                  <p style={{ fontSize: 12, color: "rgba(255,255,255,0.55)", margin: 0, lineHeight: 1.55, fontStyle: "italic" }}>"{r.text}"</p>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ marginTop: 14 }}>
+      {/* Hall selector */}
+      <div style={{ display: "flex", gap: 6, overflowX: "auto", paddingBottom: 4, marginBottom: 16 }}>
+        {DINING_HALLS.map(function(h) {
+          var sel = selectedHall === h.id;
+          return (
+            <button key={h.id} onClick={function() { setSelectedHall(h.id); setShowAll(false); setExpandedItems({}); }}
+              style={{ flexShrink: 0, padding: "7px 14px", borderRadius: 99, border: "1.5px solid " + (sel ? h.color : "rgba(255,255,255,0.1)"), background: sel ? h.color + "20" : "transparent", color: sel ? h.color : "rgba(255,255,255,0.4)", fontSize: 12, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif", transition: "all 0.15s" }}>
+              {h.name}
+            </button>
+          );
+        })}
+      </div>
+
+      {!showAll && (
+        <>
+          {/* Top 5 */}
+          <div style={{ marginBottom: 16 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#4ECB71", letterSpacing: 1, textTransform: "uppercase", marginBottom: 10 }}>Top 5 · {hallObj ? hallObj.name : ""}</div>
+            {top5.map(function(item, i) { return <ItemRow key={item.id} item={item} rank={i+1} rankType="top" />; })}
+          </div>
+
+          {/* Bottom 5 */}
+          <div style={{ marginBottom: 14 }}>
+            <div style={{ fontSize: 11, fontWeight: 700, color: "#FF6B6B", letterSpacing: 1, textTransform: "uppercase", marginBottom: 10 }}>Bottom 5 · {hallObj ? hallObj.name : ""}</div>
+            {bottom5.map(function(item, i) { return <ItemRow key={item.id} item={item} rank={hallItems.length - bottom5.length + i + 1} rankType="bottom" />; })}
+          </div>
+
+          <button onClick={function() { setShowAll(true); }}
+            style={{ width: "100%", padding: "11px 0", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", background: "transparent", color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif" }}>
+            Show all {hallItems.length} items →
+          </button>
+        </>
+      )}
+
+      {showAll && (
+        <>
+          <div style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.3)", letterSpacing: 1, textTransform: "uppercase", marginBottom: 10 }}>All items · {hallObj ? hallObj.name : ""} · ranked by approval</div>
+          {hallItems.map(function(item, i) { return <ItemRow key={item.id} item={item} rank={i+1} rankType="top" />; })}
+          <button onClick={function() { setShowAll(false); setExpandedItems({}); }}
+            style={{ width: "100%", padding: "11px 0", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)", background: "transparent", color: "rgba(255,255,255,0.5)", fontSize: 13, fontWeight: 700, cursor: "pointer", fontFamily: "Inter, sans-serif", marginTop: 8 }}>
+            ← Show less
+          </button>
+        </>
+      )}
+    </div>
+  );
 }
 
 
